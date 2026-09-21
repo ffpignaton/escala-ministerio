@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sun, Moon, Search, ShieldCheck, X, Filter } from 'lucide-react';
+import { Search, ShieldCheck, X, Filter } from 'lucide-react';
 import { useApp } from './context/AppContext';
 import Calendar from './components/Calendar';
 import AdminLogin from './components/AdminLogin';
@@ -49,24 +49,17 @@ export default function App() {
           <div className="flex items-center gap-3">
             <img src="/logo.jpg" alt="Logo Paróquia Santíssima Trindade" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
             <div>
-              <p className="text-xs font-semibold leading-tight" style={{color:'#8B6340'}}>
+              <p className="text-xs leading-tight" style={{color:'#8B6340'}}>
                 Paróquia Santíssima Trindade - Matriz São Jorge
               </p>
-              <h1 className="font-bold text-xs leading-tight" style={{color:'#8B6340'}}>
+              <p className="text-xs leading-tight" style={{color:'#8B6340'}}>
                 Ministros Extraordinários da Distribuição da Sagrada Comunhão
-              </h1>
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <ExportPDF currentMonth={currentMonth} />
-            <button
-              onClick={() => setDarkMode((d) => !d)}
-              className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Alternar modo escuro"
-            >
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
             <button
               onClick={handleAdminClick}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-medium hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"

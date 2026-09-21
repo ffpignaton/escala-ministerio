@@ -49,9 +49,7 @@ export default function App() {
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm print:hidden">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center">
-              <span className="text-white text-lg">✝</span>
-            </div>
+            <img src="/logo.jpg" alt="Logo Paróquia Santíssima Trindade" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
             <div>
               <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 leading-tight">
                 Paróquia Santíssima Trindade - Matriz São Jorge

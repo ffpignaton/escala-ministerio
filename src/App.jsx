@@ -5,6 +5,7 @@ import Calendar from './components/Calendar';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
 import ExportPDF from './components/ExportPDF';
+import { NoticesSection, BirthdaysSection } from './components/InfoSections';
 
 export default function App() {
   const { ministers, masses, darkMode, setDarkMode, isAdmin } = useApp();
@@ -137,6 +138,8 @@ export default function App() {
 
       {/* Calendário */}
       <main className="max-w-2xl mx-auto px-4 pb-8">
+        <NoticesSection />
+        <BirthdaysSection currentMonth={currentMonth} />
         <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 print:shadow-none print:border-none">
           <Calendar
             filterMinisterId={filteredMinisterId}

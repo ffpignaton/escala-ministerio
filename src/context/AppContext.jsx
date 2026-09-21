@@ -24,6 +24,7 @@ export function AppProvider({ children }) {
   const [ministers, setMinisters] = useState(initialMinisters);
   const [masses, setMasses] = useState(initialMasses);
   const [schedules, setSchedules] = useState([]);
+  const [notices, setNotices] = useState([]);
   const [darkMode, setDarkMode] = useState(
     () => window.matchMedia('(prefers-color-scheme: dark)').matches
   );
@@ -39,15 +40,15 @@ export function AppProvider({ children }) {
         return res.json();
       })
       .then((serverData) => {
-        // Dados do servidor têm prioridade — sobrescreve localStorage
         if (serverData.ministers) setMinisters(serverData.ministers);
         if (serverData.masses) setMasses(serverData.masses);
         if (serverData.schedules) setSchedules(serverData.schedules);
-        // Atualiza localStorage com os dados do servidor
+        if (serverData.notices) setNotices(serverData.notices);
         saveToStorage({
           ministers: serverData.ministers ?? initialMinisters,
           masses: serverData.masses ?? initialMasses,
           schedules: serverData.schedules ?? [],
+          notices: serverData.notices ?? [],
           darkMode,
         });
         setServerLoaded(true);
@@ -59,6 +60,7 @@ export function AppProvider({ children }) {
           if (stored.ministers) setMinisters(stored.ministers);
           if (stored.masses) setMasses(stored.masses);
           if (stored.schedules) setSchedules(stored.schedules);
+          if (stored.notices) setNotices(stored.notices);
           if (stored.darkMode !== undefined) setDarkMode(stored.darkMode);
         }
         setServerLoaded(false);
@@ -67,9 +69,9 @@ export function AppProvider({ children }) {
 
   // 2. Persiste edições do admin no localStorage
   useEffect(() => {
-    if (serverLoaded === null) return; // aguarda carregamento inicial
-    saveToStorage({ ministers, masses, schedules, darkMode });
-  }, [ministers, masses, schedules, darkMode, serverLoaded]);
+    if (serverLoaded === null) return;
+    saveToStorage({ ministers, masses, schedules, notices, darkMode });
+  }, [ministers, masses, schedules, notices, darkMode, serverLoaded]);
 
   // Aplica classe dark no html
   useEffect(() => {
@@ -135,17 +137,28 @@ export function AppProvider({ children }) {
     setSchedules((prev) => prev.filter((s) => s.id !== id));
   }, []);
 
+  // Notices CRUD
+  const addNotice = useCallback((notice) => {
+    setNotices((prev) => [...prev, { ...notice, id: crypto.randomUUID() }]);
+  }, []);
+  const updateNotice = useCallback((id, data) => {
+    setNotices((prev) => prev.map((n) => (n.id === id ? { ...n, ...data } : n)));
+  }, []);
+  const removeNotice = useCallback((id) => {
+    setNotices((prev) => prev.filter((n) => n.id !== id));
+  }, []);
+
   // Exporta JSON genérico (backup)
   const exportData = useCallback(() => {
-    downloadJson({ ministers, masses, schedules }, `escala-ministerio-${new Date().toISOString().slice(0, 10)}.json`);
-  }, [ministers, masses, schedules]);
+    downloadJson({ ministers, masses, schedules, notices }, `escala-ministerio-${new Date().toISOString().slice(0, 10)}.json`);
+  }, [ministers, masses, schedules, notices]);
 
   // Publica automaticamente via Vercel Serverless Function → GitHub API
   const publishData = useCallback(async () => {
     const res = await fetch('/api/publish', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ministers, masses, schedules }),
+      body: JSON.stringify({ ministers, masses, schedules, notices }),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -178,6 +191,7 @@ export function AppProvider({ children }) {
         ministers,
         masses,
         schedules,
+        notices,
         darkMode,
         setDarkMode,
         isAdmin,
@@ -195,6 +209,9 @@ export function AppProvider({ children }) {
         exportData,
         publishData,
         importData,
+        addNotice,
+        updateNotice,
+        removeNotice,
       }}
     >
       {children}

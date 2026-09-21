@@ -39,29 +39,6 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
     return result;
   }, [calStart, calEnd]);
 
-  function getDayStatus(dateStr, daySchedules) {
-    if (!daySchedules || daySchedules.length === 0) return 'empty';
-    const totalMinisters = new Set(daySchedules.flatMap((s) => s.ministerIds)).size;
-    if (totalMinisters === 0) return 'empty';
-    if (totalMinisters < 3) return 'low';
-    if (totalMinisters < 5) return 'medium';
-    return 'good';
-  }
-
-  const statusColor = {
-    empty: '',
-    low: 'bg-red-100 dark:bg-red-900/30',
-    medium: 'bg-yellow-100 dark:bg-yellow-900/30',
-    good: 'bg-green-100 dark:bg-green-900/30',
-  };
-
-  const statusDot = {
-    empty: '',
-    low: 'bg-red-400',
-    medium: 'bg-yellow-400',
-    good: 'bg-green-400',
-  };
-
   return (
     <div className="w-full">
       {/* Header do mês */}
@@ -88,13 +65,6 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
         >
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
-      </div>
-
-      {/* Legenda */}
-      <div className="flex flex-wrap gap-3 mb-4 text-xs text-gray-500 dark:text-gray-400">
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400 inline-block" /> Escala completa</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" /> Poucos ministros</span>
-        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400 inline-block" /> Atenção</span>
       </div>
 
       {/* Dias da semana */}
@@ -126,9 +96,9 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
               className={[
                 'relative flex flex-col items-center justify-start min-h-[56px] rounded-xl p-1 pt-1 transition-all text-sm font-medium border-2',
                 inMonth ? 'cursor-pointer' : 'opacity-25 cursor-default pointer-events-none',
-                isSelected ? 'border-purple-500 ring-2 ring-purple-300 dark:ring-purple-700' : 'border-transparent',
-                today ? 'ring-2 ring-offset-1 ring-purple-400 dark:ring-purple-500' : '',
-                inMonth && status !== 'empty' ? statusColor[status] : 'hover:bg-gray-50 dark:hover:bg-gray-700/50',
+                isSelected ? 'border-purple-500 ring-2 ring-purple-300' : 'border-transparent',
+                today ? 'ring-2 ring-offset-1 ring-purple-400' : '',
+                inMonth ? 'hover:bg-gray-50' : '',
                 isSunday && inMonth ? 'font-bold' : '',
               ].join(' ')}
               aria-label={`${format(day, 'd MMMM', { locale: ptBR })}${daySchedules.length > 0 ? `, ${daySchedules.length} missa(s)` : ''}`}
@@ -136,24 +106,14 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
               <span className={[
                 'w-7 h-7 flex items-center justify-center rounded-full text-sm',
                 today ? 'bg-purple-600 text-white font-bold' : '',
-                isSunday && !today ? 'text-purple-600 dark:text-purple-400' : 'text-gray-700 dark:text-gray-200',
+                isSunday && !today ? 'text-purple-600' : 'text-gray-700',
               ].join(' ')}>
                 {format(day, 'd')}
               </span>
 
-              {/* Dots das missas */}
+              {/* Ponto verde se tiver missa */}
               {daySchedules.length > 0 && (
-                <div className="flex gap-0.5 mt-0.5 flex-wrap justify-center">
-                  {daySchedules.slice(0, 3).map((s) => (
-                    <span
-                      key={s.id}
-                      className={`w-1.5 h-1.5 rounded-full ${statusDot[status]}`}
-                    />
-                  ))}
-                  {daySchedules.length > 3 && (
-                    <span className="text-xs text-gray-400 leading-none">+</span>
-                  )}
-                </div>
+                <span className="w-2 h-2 rounded-full bg-green-500 mt-0.5" />
               )}
             </button>
           );

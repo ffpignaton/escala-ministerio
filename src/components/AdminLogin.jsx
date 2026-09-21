@@ -15,7 +15,9 @@ export default function AdminLogin({ onClose }) {
     setError('');
     const ok = await login(password);
     setLoading(false);
-    if (!ok) {
+    if (ok) {
+      onClose(true); // avisa que o login foi bem-sucedido
+    } else {
       setError('Senha incorreta. Tente novamente.');
     }
   }

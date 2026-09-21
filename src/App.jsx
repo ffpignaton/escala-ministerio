@@ -12,10 +12,10 @@ export default function App() {
   const [searchName, setSearchName] = useState('');
   const [filterMassId, setFilterMassId] = useState('');
 
-  // Abre painel admin automaticamente após login
-  function handleLoginClose() {
+  // Abre painel admin automaticamente após login bem-sucedido
+  function handleLoginClose(loggedIn) {
     setShowLogin(false);
-    if (isAdmin) setShowAdmin(true);
+    if (loggedIn) setShowAdmin(true);
   }
 
   // Quando já está logado, abre direto

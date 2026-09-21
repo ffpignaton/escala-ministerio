@@ -53,8 +53,8 @@ export default function App() {
               <span className="text-white text-lg">✝</span>
             </div>
             <div>
-              <h1 className="font-bold text-gray-900 dark:text-white text-sm leading-tight">
-                Ministros Extraordinários da<br />Distribuição da Sagrada Comunhão
+              <h1 className="font-bold text-gray-900 dark:text-white text-xs leading-tight">
+                Ministros Extraordinários da Distribuição da Sagrada Comunhão
               </h1>
               <p className="text-xs text-gray-500 dark:text-gray-400">Escala de Ministros</p>
             </div>

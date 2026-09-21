@@ -140,9 +140,18 @@ export function AppProvider({ children }) {
     downloadJson({ ministers, masses, schedules }, `escala-ministerio-${new Date().toISOString().slice(0, 10)}.json`);
   }, [ministers, masses, schedules]);
 
-  // Exporta data.json pronto para publicar no GitHub
-  const publishData = useCallback(() => {
-    downloadJson({ ministers, masses, schedules }, 'data.json');
+  // Publica automaticamente via Vercel Serverless Function → GitHub API
+  const publishData = useCallback(async () => {
+    const res = await fetch('/api/publish', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ministers, masses, schedules }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || 'Erro ao publicar');
+    }
+    return true;
   }, [ministers, masses, schedules]);
 
   const importData = useCallback((file) => {

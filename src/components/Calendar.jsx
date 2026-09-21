@@ -52,8 +52,8 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
         </button>
 
         <div className="flex items-center gap-2">
-          <CalIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 capitalize">
+          <CalIcon className="w-5 h-5" style={{color:'#8B6340'}} />
+          <h2 className="text-xl font-semibold text-gray-800 capitalize">
             {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
           </h2>
         </div>
@@ -95,18 +95,22 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
               className={[
                 'relative flex flex-col items-center justify-start min-h-[56px] rounded-xl p-1 pt-1 transition-all text-sm font-medium border-2',
                 inMonth ? 'cursor-pointer' : 'opacity-25 cursor-default pointer-events-none',
-                isSelected ? 'border-purple-500 ring-2 ring-purple-300' : 'border-transparent',
-                today ? 'ring-2 ring-offset-1 ring-purple-400' : '',
+                isSelected ? 'border-2' : 'border-transparent',
                 inMonth ? 'hover:bg-gray-50' : '',
                 isSunday && inMonth ? 'font-bold' : '',
               ].join(' ')}
+              style={isSelected ? {borderColor:'#8B6340'} : {}}
               aria-label={`${format(day, 'd MMMM', { locale: ptBR })}${daySchedules.length > 0 ? `, ${daySchedules.length} missa(s)` : ''}`}
             >
-              <span className={[
-                'w-7 h-7 flex items-center justify-center rounded-full text-sm',
-                today ? 'bg-purple-600 text-white font-bold' : '',
-                isSunday && !today ? 'text-purple-600' : 'text-gray-700',
-              ].join(' ')}>
+              <span
+                className="w-7 h-7 flex items-center justify-center rounded-full text-sm border-2"
+                style={{
+                  backgroundColor: today ? '#8B6340' : 'transparent',
+                  color: today ? '#fff' : (isSunday ? '#8B6340' : '#374151'),
+                  fontWeight: today || isSunday ? 700 : 400,
+                  borderColor: today ? '#8B6340' : 'transparent',
+                }}
+              >
                 {format(day, 'd')}
               </span>
 

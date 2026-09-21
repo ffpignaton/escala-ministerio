@@ -8,7 +8,7 @@ import ExportPDF from './components/ExportPDF';
 import { NoticesSection, BirthdaysSection } from './components/InfoSections';
 
 export default function App() {
-  const { ministers, masses, darkMode, setDarkMode, isAdmin } = useApp();
+  const { ministers, masses, isAdmin } = useApp();
   const [showLogin, setShowLogin] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [searchName, setSearchName] = useState('');

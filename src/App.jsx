@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Sun, Moon, Search, ShieldCheck, X, Printer, Filter } from 'lucide-react';
+import { Sun, Moon, Search, ShieldCheck, X, Filter } from 'lucide-react';
 import { useApp } from './context/AppContext';
 import Calendar from './components/Calendar';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
+import ExportPDF from './components/ExportPDF';
 
 export default function App() {
   const { ministers, masses, darkMode, setDarkMode, isAdmin } = useApp();
   const [showLogin, setShowLogin] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [searchName, setSearchName] = useState('');
+  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [filterMassId, setFilterMassId] = useState('');
 
   // Abre painel admin automaticamente após login bem-sucedido
@@ -39,10 +41,6 @@ export default function App() {
       )
     : [];
 
-  function printSchedule() {
-    window.print();
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Header */}
@@ -61,13 +59,7 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={printSchedule}
-              title="Imprimir / Salvar PDF"
-              className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              <Printer className="w-4 h-4" />
-            </button>
+            <ExportPDF currentMonth={currentMonth} />
             <button
               onClick={() => setDarkMode((d) => !d)}
               className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
@@ -156,6 +148,8 @@ export default function App() {
           <Calendar
             filterMinisterId={filteredMinisterId}
             filterMassId={filterMassId || null}
+            currentMonth={currentMonth}
+            setCurrentMonth={setCurrentMonth}
           />
         </div>
 

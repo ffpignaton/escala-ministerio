@@ -7,9 +7,8 @@ import DayModal from './DayModal';
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-export default function Calendar({ filterMinisterId, filterMassId }) {
+export default function Calendar({ filterMinisterId, filterMassId, currentMonth, setCurrentMonth }) {
   const { schedules, masses, ministers } = useApp();
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState(null);
 
   const monthStart = startOfMonth(currentMonth);

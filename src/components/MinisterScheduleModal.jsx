@@ -47,8 +47,8 @@ export default function MinisterScheduleModal({ minister, onClose }) {
         {/* Header */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-              <User className="w-5 h-5 text-purple-600" />
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{backgroundColor:'#f5ede3'}}>
+              <User className="w-5 h-5" style={{color:'#8B6340'}} />
             </div>
             <div>
               <h2 className="font-bold text-gray-900 text-base leading-tight">{minister.name}</h2>
@@ -80,8 +80,8 @@ export default function MinisterScheduleModal({ minister, onClose }) {
                 <div key={monthKey}>
                   {/* Cabeçalho do mês */}
                   <div className="flex items-center gap-2 mb-2">
-                    <CalendarDays className="w-3.5 h-3.5 text-purple-500" />
-                    <span className="text-xs font-semibold text-purple-600 uppercase tracking-wide capitalize">
+                    <CalendarDays className="w-3.5 h-3.5" style={{color:'#8B6340'}} />
+                    <span className="text-xs font-semibold uppercase tracking-wide capitalize" style={{color:'#8B6340'}}>
                       {formatMonthLabel(monthKey)}
                     </span>
                     <span className="text-xs text-gray-400">· {items.length} escala{items.length !== 1 ? 's' : ''}</span>
@@ -99,7 +99,7 @@ export default function MinisterScheduleModal({ minister, onClose }) {
                           <span className="text-sm text-gray-700 font-medium capitalize flex-1">
                             {formatDate(s.date)}
                           </span>
-                          <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                          <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full" style={{color:'#8B6340', backgroundColor:'#f5ede3'}}>
                             <Clock className="w-3 h-3" />
                             {mass?.time}
                           </div>
@@ -117,7 +117,8 @@ export default function MinisterScheduleModal({ minister, onClose }) {
         <div className="px-5 py-3 border-t border-gray-100 flex-shrink-0">
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium transition-colors"
+            className="w-full py-2.5 rounded-xl text-white text-sm font-medium transition-colors"
+            style={{backgroundColor:'#8B6340'}}
           >
             Fechar
           </button>

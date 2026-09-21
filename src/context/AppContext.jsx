@@ -40,15 +40,18 @@ export function AppProvider({ children }) {
         return res.json();
       })
       .then((serverData) => {
+        // Para notices e darkMode, preserva o localStorage se o servidor não tiver
+        const stored = loadFromStorage();
         if (serverData.ministers) setMinisters(serverData.ministers);
         if (serverData.masses) setMasses(serverData.masses);
         if (serverData.schedules) setSchedules(serverData.schedules);
-        if (serverData.notices) setNotices(serverData.notices);
+        const finalNotices = serverData.notices ?? stored?.notices ?? [];
+        setNotices(finalNotices);
         saveToStorage({
           ministers: serverData.ministers ?? initialMinisters,
           masses: serverData.masses ?? initialMasses,
           schedules: serverData.schedules ?? [],
-          notices: serverData.notices ?? [],
+          notices: finalNotices,
           darkMode,
         });
         setServerLoaded(true);

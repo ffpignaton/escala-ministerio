@@ -53,6 +53,9 @@ export default function App() {
               <span className="text-white text-lg">✝</span>
             </div>
             <div>
+              <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 leading-tight">
+                Paróquia Santíssima Trindade - Matriz São Jorge
+              </p>
               <h1 className="font-bold text-gray-900 dark:text-white text-xs leading-tight">
                 Ministros Extraordinários da Distribuição da Sagrada Comunhão
               </h1>

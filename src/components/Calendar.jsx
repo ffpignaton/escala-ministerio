@@ -119,14 +119,12 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
         })}
       </div>
 
-      {/* Modal/painel expandido do dia */}
+      {/* Modal do dia */}
       {selectedDay && (
         <DayModal
           day={selectedDay}
           daySchedules={schedulesByDate[format(selectedDay, 'yyyy-MM-dd')] || []}
           onClose={() => setSelectedDay(null)}
-          filterMassId={filterMassId}
-          filterMinisterId={filterMinisterId}
         />
       )}
     </div>

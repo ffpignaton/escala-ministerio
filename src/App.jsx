@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShieldCheck, Filter, User } from 'lucide-react';
+import { ShieldCheck, User } from 'lucide-react';
 import { useApp } from './context/AppContext';
 import Calendar from './components/Calendar';
 import AdminLogin from './components/AdminLogin';
@@ -9,13 +9,12 @@ import { NoticesSection, BirthdaysSection } from './components/InfoSections';
 import MinisterScheduleModal from './components/MinisterScheduleModal';
 
 export default function App() {
-  const { ministers, masses, isAdmin } = useApp();
+  const { ministers, isAdmin } = useApp();
   const [showLogin, setShowLogin] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [selectedMinisterId, setSelectedMinisterId] = useState('');
   const [showMinisterModal, setShowMinisterModal] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [filterMassId, setFilterMassId] = useState('');
 
   function handleLoginClose(loggedIn) {
     setShowLogin(false);
@@ -54,10 +53,10 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            <ExportPDF currentMonth={currentMonth} />
             <button
               onClick={handleAdminClick}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 text-xs font-medium hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-medium transition-colors"
+              style={{backgroundColor:'#8B6340'}}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               Admin
@@ -68,7 +67,7 @@ export default function App() {
 
       {/* Filtros */}
       <div className="max-w-2xl mx-auto px-4 py-4 print:hidden">
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex gap-2 items-center">
 
           {/* Select de ministro */}
           <div className="flex-1 relative">
@@ -76,7 +75,8 @@ export default function App() {
             <select
               value={selectedMinisterId}
               onChange={handleMinisterChange}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm appearance-none cursor-pointer"
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 shadow-sm appearance-none cursor-pointer"
+              style={{'--tw-ring-color':'#8B6340'}}
             >
               <option value="">Ver minha escala...</option>
               {activeMinsters.map((m) => (
@@ -85,20 +85,18 @@ export default function App() {
             </select>
           </div>
 
-          {/* Filtro por missa */}
-          <div className="relative">
-            <Filter className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <select
-              value={filterMassId}
-              onChange={(e) => setFilterMassId(e.target.value)}
-              className="pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-sm appearance-none cursor-pointer"
-            >
-              <option value="">Todas as missas</option>
-              {masses.map((m) => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </select>
-          </div>
+          {/* PDF */}
+          <ExportPDF currentMonth={currentMonth} />
+
+          {/* Admin */}
+          <button
+            onClick={handleAdminClick}
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-white text-xs font-medium transition-colors flex-shrink-0"
+            style={{backgroundColor:'#8B6340'}}
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Admin
+          </button>
         </div>
       </div>
 
@@ -109,7 +107,7 @@ export default function App() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 print:shadow-none print:border-none">
           <Calendar
             filterMinisterId={null}
-            filterMassId={filterMassId || null}
+            filterMassId={null}
             currentMonth={currentMonth}
             setCurrentMonth={setCurrentMonth}
           />

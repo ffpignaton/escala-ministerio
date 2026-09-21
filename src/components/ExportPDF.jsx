@@ -83,10 +83,11 @@ export default function ExportPDF({ currentMonth }) {
       <button
         onClick={handleExport}
         disabled={loading}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors disabled:opacity-50"
+        className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-white text-xs font-medium transition-colors disabled:opacity-50 flex-shrink-0"
+        style={{backgroundColor:'#8B6340'}}
       >
         {loading ? (
-          <span className="w-3.5 h-3.5 border-2 border-red-300 border-t-red-600 rounded-full animate-spin" />
+          <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
         ) : (
           <span className="text-sm">📄</span>
         )}

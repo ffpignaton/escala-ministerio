@@ -51,13 +51,12 @@ export default function App() {
           <div className="flex items-center gap-3">
             <img src="/logo.jpg" alt="Logo Paróquia Santíssima Trindade" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
             <div>
-              <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 leading-tight">
+              <p className="text-xs font-semibold leading-tight" style={{color:'#8B6340'}}>
                 Paróquia Santíssima Trindade - Matriz São Jorge
               </p>
-              <h1 className="font-bold text-gray-900 dark:text-white text-xs leading-tight">
+              <h1 className="font-bold text-xs leading-tight" style={{color:'#8B6340'}}>
                 Ministros Extraordinários da Distribuição da Sagrada Comunhão
               </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Escala de Ministros</p>
             </div>
           </div>
 

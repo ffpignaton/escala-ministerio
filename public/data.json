@@ -1,0 +1,16 @@
+{
+  "ministers": [
+    { "id": "1", "name": "Ana Lima", "phone": "(11) 99999-0001", "active": true },
+    { "id": "2", "name": "Carlos Silva", "phone": "(11) 99999-0002", "active": true },
+    { "id": "3", "name": "Maria Santos", "phone": "(11) 99999-0003", "active": true },
+    { "id": "4", "name": "João Oliveira", "phone": "(11) 99999-0004", "active": true },
+    { "id": "5", "name": "Lucia Ferreira", "phone": "(11) 99999-0005", "active": true },
+    { "id": "6", "name": "Pedro Costa", "phone": "(11) 99999-0006", "active": true }
+  ],
+  "masses": [
+    { "id": "m1", "name": "Missa das 7h", "time": "07:00" },
+    { "id": "m2", "name": "Missa das 9h", "time": "09:00" },
+    { "id": "m3", "name": "Missa das 19h", "time": "19:00" }
+  ],
+  "schedules": []
+}

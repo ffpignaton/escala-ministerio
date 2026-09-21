@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { initialMinisters, initialMasses, initialSchedules, ADMIN_PASSWORD_HASH, hashPassword } from '../data/initialData';
+import { initialMinisters, initialMasses, ADMIN_PASSWORD_HASH, hashPassword } from '../data/initialData';
 
 const AppContext = createContext(null);
 
 const STORAGE_KEY = 'escala_ministerio_data';
+const SERVER_DATA_URL = '/data.json';
 
 function loadFromStorage() {
   try {
@@ -20,28 +21,55 @@ function saveToStorage(data) {
 }
 
 export function AppProvider({ children }) {
-  const [ministers, setMinisters] = useState(() => {
-    const stored = loadFromStorage();
-    return stored?.ministers ?? initialMinisters;
-  });
-  const [masses, setMasses] = useState(() => {
-    const stored = loadFromStorage();
-    return stored?.masses ?? initialMasses;
-  });
-  const [schedules, setSchedules] = useState(() => {
-    const stored = loadFromStorage();
-    return stored?.schedules ?? initialSchedules;
-  });
-  const [darkMode, setDarkMode] = useState(() => {
-    const stored = loadFromStorage();
-    return stored?.darkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const [ministers, setMinisters] = useState(initialMinisters);
+  const [masses, setMasses] = useState(initialMasses);
+  const [schedules, setSchedules] = useState([]);
+  const [darkMode, setDarkMode] = useState(
+    () => window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
   const [isAdmin, setIsAdmin] = useState(false);
+  // null = carregando, false = falhou, true = ok
+  const [serverLoaded, setServerLoaded] = useState(null);
 
-  // Persiste tudo no localStorage
+  // 1. Ao iniciar, tenta carregar do servidor (data.json)
   useEffect(() => {
+    fetch(`${SERVER_DATA_URL}?_=${Date.now()}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('not found');
+        return res.json();
+      })
+      .then((serverData) => {
+        // Dados do servidor têm prioridade — sobrescreve localStorage
+        if (serverData.ministers) setMinisters(serverData.ministers);
+        if (serverData.masses) setMasses(serverData.masses);
+        if (serverData.schedules) setSchedules(serverData.schedules);
+        // Atualiza localStorage com os dados do servidor
+        saveToStorage({
+          ministers: serverData.ministers ?? initialMinisters,
+          masses: serverData.masses ?? initialMasses,
+          schedules: serverData.schedules ?? [],
+          darkMode,
+        });
+        setServerLoaded(true);
+      })
+      .catch(() => {
+        // Sem servidor ou erro → usa localStorage como fallback
+        const stored = loadFromStorage();
+        if (stored) {
+          if (stored.ministers) setMinisters(stored.ministers);
+          if (stored.masses) setMasses(stored.masses);
+          if (stored.schedules) setSchedules(stored.schedules);
+          if (stored.darkMode !== undefined) setDarkMode(stored.darkMode);
+        }
+        setServerLoaded(false);
+      });
+  }, []);
+
+  // 2. Persiste edições do admin no localStorage
+  useEffect(() => {
+    if (serverLoaded === null) return; // aguarda carregamento inicial
     saveToStorage({ ministers, masses, schedules, darkMode });
-  }, [ministers, masses, schedules, darkMode]);
+  }, [ministers, masses, schedules, darkMode, serverLoaded]);
 
   // Aplica classe dark no html
   useEffect(() => {
@@ -107,16 +135,14 @@ export function AppProvider({ children }) {
     setSchedules((prev) => prev.filter((s) => s.id !== id));
   }, []);
 
-  // Export/Import
+  // Exporta JSON genérico (backup)
   const exportData = useCallback(() => {
-    const data = JSON.stringify({ ministers, masses, schedules }, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `escala-ministerio-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    downloadJson({ ministers, masses, schedules }, `escala-ministerio-${new Date().toISOString().slice(0, 10)}.json`);
+  }, [ministers, masses, schedules]);
+
+  // Exporta data.json pronto para publicar no GitHub
+  const publishData = useCallback(() => {
+    downloadJson({ ministers, masses, schedules }, 'data.json');
   }, [ministers, masses, schedules]);
 
   const importData = useCallback((file) => {
@@ -146,6 +172,7 @@ export function AppProvider({ children }) {
         darkMode,
         setDarkMode,
         isAdmin,
+        serverLoaded,
         login,
         logout,
         addMinister,
@@ -157,12 +184,23 @@ export function AppProvider({ children }) {
         upsertSchedule,
         removeSchedule,
         exportData,
+        publishData,
         importData,
       }}
     >
       {children}
     </AppContext.Provider>
   );
+}
+
+function downloadJson(data, filename) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 export function useApp() {

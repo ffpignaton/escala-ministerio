@@ -81,7 +81,6 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
         {days.map((day) => {
           const dateStr = format(day, 'yyyy-MM-dd');
           const daySchedules = schedulesByDate[dateStr] || [];
-          const status = getDayStatus(dateStr, daySchedules);
           const inMonth = isSameMonth(day, currentMonth);
           const today = isToday(day);
           const isSunday = day.getDay() === 0;

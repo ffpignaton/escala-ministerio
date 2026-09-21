@@ -1,16 +1,23 @@
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Check, X, Phone, User } from 'lucide-react';
+import { Plus, Pencil, Trash2, Check, Phone, User, Cake } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+
+function formatBirthday(dateStr) {
+  if (!dateStr) return null;
+  const [y, m, d] = dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
 
 function MinisterForm({ initial, onSave, onCancel }) {
   const [name, setName] = useState(initial?.name ?? '');
   const [phone, setPhone] = useState(initial?.phone ?? '');
+  const [birthday, setBirthday] = useState(initial?.birthday ?? '');
   const [active, setActive] = useState(initial?.active ?? true);
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!name.trim()) return;
-    onSave({ name: name.trim(), phone: phone.trim(), active });
+    onSave({ name: name.trim(), phone: phone.trim(), birthday, active });
   }
 
   return (
@@ -36,6 +43,15 @@ function MinisterForm({ initial, onSave, onCancel }) {
             className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
           />
         </div>
+      </div>
+      <div>
+        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Data de nascimento</label>
+        <input
+          type="date"
+          value={birthday}
+          onChange={(e) => setBirthday(e.target.value)}
+          className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
       </div>
       <label className="flex items-center gap-2 cursor-pointer">
         <input
@@ -117,11 +133,18 @@ export default function MinistersPanel() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">{minister.name}</p>
-                  {minister.phone && (
-                    <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
-                      <Phone className="w-3 h-3" /> {minister.phone}
-                    </p>
-                  )}
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                    {minister.phone && (
+                      <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                        <Phone className="w-3 h-3" /> {minister.phone}
+                      </p>
+                    )}
+                    {minister.birthday && (
+                      <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
+                        <Cake className="w-3 h-3" /> {formatBirthday(minister.birthday)}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${minister.active ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-400'}`}>
                   {minister.active ? 'Ativo' : 'Inativo'}

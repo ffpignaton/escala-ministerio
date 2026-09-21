@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { LogOut, Users, CalendarDays, Clock, Download, Upload, ShieldCheck, Globe, X } from 'lucide-react';
+import { LogOut, Users, CalendarDays, Clock, Download, Upload, ShieldCheck, Globe, X, FileDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import MinistersPanel from './MinistersPanel';
 import SchedulesPanel from './SchedulesPanel';
 import MassesPanel from './MassesPanel';
+import AdminExportPDF from './AdminExportPDF';
 
 const TABS = [
   { id: 'schedules', label: 'Escalas', icon: CalendarDays },
   { id: 'ministers', label: 'Ministros', icon: Users },
   { id: 'masses', label: 'Missas', icon: Clock },
+  { id: 'pdf', label: 'PDF', icon: FileDown },
 ];
 
 export default function AdminPanel({ onClose }) {
@@ -146,6 +148,7 @@ export default function AdminPanel({ onClose }) {
         {activeTab === 'schedules' && <SchedulesPanel />}
         {activeTab === 'ministers' && <MinistersPanel />}
         {activeTab === 'masses' && <MassesPanel />}
+        {activeTab === 'pdf' && <AdminExportPDF />}
       </div>
     </div>
   );

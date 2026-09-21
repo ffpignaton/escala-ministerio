@@ -21,7 +21,7 @@ export default function DayModal({ day, daySchedules, onClose }) {
       <div className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md max-h-[85vh] flex flex-col">
 
         {/* Header */}
-        <div className={`px-5 py-4 flex items-center justify-between flex-shrink-0 ${isSunday ? 'bg-purple-600' : 'bg-gray-800'} rounded-t-3xl sm:rounded-t-2xl`}>
+        <div className="px-5 py-4 flex items-center justify-between flex-shrink-0 rounded-t-3xl sm:rounded-t-2xl" style={{backgroundColor:'#8B6340'}}>
           <div>
             <p className="text-white/70 text-xs uppercase tracking-wide font-medium capitalize">
               {isSunday ? '🌟 Domingo' : format(day, 'EEEE', { locale: ptBR })}
@@ -56,7 +56,7 @@ export default function DayModal({ day, daySchedules, onClose }) {
                   <div key={schedule.id} className="rounded-xl border border-gray-100 overflow-hidden">
                     {/* Cabeçalho da missa */}
                     <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border-b border-gray-100">
-                      <Clock className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                      <Clock className="w-4 h-4 flex-shrink-0" style={{color:'#8B6340'}} />
                       <span className="font-semibold text-gray-800 text-sm flex-1">
                         {mass?.name || 'Missa'}
                       </span>
@@ -84,7 +84,7 @@ export default function DayModal({ day, daySchedules, onClose }) {
                               key={minister.id}
                               className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm bg-gray-50 text-gray-700"
                             >
-                              <span className="w-2 h-2 rounded-full bg-purple-400 flex-shrink-0" />
+                              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor:'#8B6340'}} />
                               {minister.name}
                             </div>
                           ))}
@@ -102,7 +102,8 @@ export default function DayModal({ day, daySchedules, onClose }) {
         <div className="px-5 py-3 border-t border-gray-100 flex-shrink-0">
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium transition-colors"
+            className="w-full py-2.5 rounded-xl text-white text-sm font-medium transition-colors"
+            style={{backgroundColor:'#8B6340'}}
           >
             Fechar
           </button>

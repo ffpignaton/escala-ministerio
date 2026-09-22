@@ -4,13 +4,15 @@
       "id": "1",
       "name": "Ana Lima",
       "phone": "(11) 99999-0001",
-      "active": true
+      "active": true,
+      "birthday": "1980-09-22"
     },
     {
       "id": "2",
       "name": "Carlos Silva",
       "phone": "(11) 99999-0002",
-      "active": true
+      "active": true,
+      "birthday": "1980-10-22"
     },
     {
       "id": "3",

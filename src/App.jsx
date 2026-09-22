@@ -45,15 +45,15 @@ export default function App() {
 
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
-            {/* Logo */}
+            {/* Logo esquerda — Paróquia São Jorge */}
             <img
               src="/logo.png"
               alt="Logo Paróquia Santíssima Trindade"
               className="w-16 h-16 rounded-full object-cover flex-shrink-0"
               style={{border:'2px solid var(--gold)', boxShadow:'0 0 0 3px var(--brown-dark), 0 0 0 5px var(--gold)'}}
             />
-            {/* Textos */}
-            <div className="flex-1 min-w-0">
+            {/* Textos centrais */}
+            <div className="flex-1 min-w-0 text-center">
               <p style={{fontFamily:"'Cinzel', serif", color:'var(--gold)', fontSize:11, letterSpacing:'0.12em', textTransform:'uppercase'}}>
                 Paróquia Santíssima Trindade · Matriz São Jorge
               </p>
@@ -61,6 +61,13 @@ export default function App() {
                 Ministros Extraordinários da Distribuição da Sagrada Comunhão
               </p>
             </div>
+            {/* Logo direita — Matriz */}
+            <img
+              src="/logo.jpg"
+              alt="Logo Matriz São Jorge"
+              className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+              style={{border:'2px solid var(--gold)', boxShadow:'0 0 0 3px var(--brown-dark), 0 0 0 5px var(--gold)'}}
+            />
           </div>
         </div>
 

@@ -95,7 +95,7 @@ export default function MinisterScheduleModal({ minister, onClose }) {
                           key={s.id}
                           className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5 border border-gray-100"
                         >
-                          <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+                          <div className="w-2 h-2 rounded-full bg-amber-600 flex-shrink-0" />
                           <span className="text-sm text-gray-700 font-medium capitalize flex-1">
                             {formatDate(s.date)}
                           </span>

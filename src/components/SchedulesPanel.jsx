@@ -30,7 +30,7 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-purple-50 dark:bg-purple-900/10 rounded-xl p-4 border border-purple-100 dark:border-purple-800 space-y-3">
+    <form onSubmit={handleSubmit} className="bg-amber-50 rounded-xl p-4 border border-amber-100 space-y-3">
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Data *</label>
@@ -39,7 +39,7 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
           />
         </div>
         <div>
@@ -48,7 +48,7 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
             value={massId}
             onChange={(e) => setMassId(e.target.value)}
             required
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
           >
             {masses.map((m) => (
               <option key={m.id} value={m.id}>{m.name}</option>
@@ -66,7 +66,7 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
                 type="checkbox"
                 checked={selectedMinisters.includes(m.id)}
                 onChange={() => toggleMinister(m.id)}
-                className="rounded accent-purple-600"
+                className="rounded accent-amber-700"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{m.name}</span>
             </label>
@@ -78,7 +78,7 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
         <button type="button" onClick={onCancel} className="px-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
           Cancelar
         </button>
-        <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium flex items-center gap-1 transition-colors">
+        <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-medium flex items-center gap-1 transition-colors">
           <Check className="w-4 h-4" /> Salvar
         </button>
       </div>
@@ -144,7 +144,7 @@ export default function SchedulesPanel() {
 
       <button
         onClick={() => { setAdding(true); setEditingId(null); }}
-        className="w-full py-2.5 rounded-xl border-2 border-dashed border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400 text-sm font-medium flex items-center justify-center gap-2 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
+        className="w-full py-2.5 rounded-xl border-2 border-dashed border-amber-200 text-amber-800 text-sm font-medium flex items-center justify-center gap-2 hover:bg-amber-50 transition-colors"
       >
         <Plus className="w-4 h-4" /> Nova Escala
       </button>
@@ -173,7 +173,7 @@ export default function SchedulesPanel() {
                 className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/40 hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-purple-500" />
+                  <CalendarDays className="w-4 h-4 text-amber-700" />
                   <span className="text-sm font-medium text-gray-800 dark:text-gray-200 capitalize">
                     {formatDateLabel(date)}
                   </span>
@@ -200,7 +200,7 @@ export default function SchedulesPanel() {
                           <div className="flex items-start gap-3 bg-white dark:bg-gray-800 rounded-lg px-3 py-2.5 border border-gray-100 dark:border-gray-700">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-1.5 mb-1">
-                                <Clock className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
+                                <Clock className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
                                 <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{mass?.name}</span>
                               </div>
                               <div className="flex items-center gap-1 flex-wrap">

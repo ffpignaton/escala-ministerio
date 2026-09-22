@@ -121,7 +121,7 @@ export default function AdminExportPDF() {
                   const mins = s.ministerIds.map(getMinister).filter(Boolean);
                   return (
                     <div key={s.id} className="flex items-start gap-2 text-xs text-gray-500 dark:text-gray-400 mb-0.5">
-                      <span className="font-medium text-purple-600 dark:text-purple-400 w-10 flex-shrink-0">{mass?.time}</span>
+                      <span className="font-medium w-10 flex-shrink-0" style={{color:'var(--brown)'}}>{mass?.time}</span>
                       <span>{mins.map((m) => m.name).join(', ') || 'Sem ministros'}</span>
                     </div>
                   );

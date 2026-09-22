@@ -168,7 +168,7 @@ export function AppProvider({ children }) {
       throw new Error(err.error || 'Erro ao publicar');
     }
     return true;
-  }, [ministers, masses, schedules]);
+  }, [ministers, masses, schedules, notices]);
 
   const importData = useCallback((file) => {
     return new Promise((resolve, reject) => {

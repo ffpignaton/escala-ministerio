@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Corpo da requisição inválido' });
   }
 
-  const { ministers, masses, schedules } = body ?? {};
+  const { ministers, masses, schedules, notices } = body ?? {};
   if (!ministers || !masses || !schedules) {
     return res.status(400).json({ error: 'Dados incompletos' });
   }
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
 
   // 2. Envia o arquivo atualizado
   const content = Buffer.from(
-    JSON.stringify({ ministers, masses, schedules }, null, 2)
+    JSON.stringify({ ministers, masses, schedules, notices: notices ?? [] }, null, 2)
   ).toString('base64');
 
   const putBody = {

@@ -40,44 +40,46 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
   }, [calStart, calEnd]);
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{backgroundColor:'var(--cream)'}}>
       {/* Header do mês */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between px-4 py-4" style={{borderBottom:'1px solid var(--border)'}}>
         <button
           onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+          style={{color:'var(--brown)', backgroundColor:'var(--brown-light)'}}
           aria-label="Mês anterior"
         >
-          <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronLeft className="w-4 h-4" />
         </button>
 
         <div className="flex items-center gap-2">
-          <CalIcon className="w-5 h-5" style={{color:'#8B6340'}} />
-          <h2 className="text-xl font-semibold text-gray-800 capitalize">
+          <CalIcon className="w-4 h-4" style={{color:'var(--gold)'}} />
+          <h2 className="capitalize" style={{fontFamily:"'Cinzel', serif", fontSize:15, color:'var(--brown-dark)', fontWeight:600, letterSpacing:'0.04em'}}>
             {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
           </h2>
         </div>
 
         <button
           onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
-          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+          style={{color:'var(--brown)', backgroundColor:'var(--brown-light)'}}
           aria-label="Próximo mês"
         >
-          <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <ChevronRight className="w-4 h-4" />
         </button>
       </div>
 
       {/* Dias da semana */}
-      <div className="grid grid-cols-7 mb-1">
+      <div className="grid grid-cols-7 mb-1 px-2 pt-2">
         {WEEKDAYS.map((d) => (
-          <div key={d} className="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2">
+          <div key={d} className="text-center py-1" style={{fontSize:11, fontWeight:600, color:'var(--muted)', fontFamily:"'Cinzel', serif", letterSpacing:'0.06em'}}>
             {d}
           </div>
         ))}
       </div>
 
       {/* Grade de dias */}
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-0.5 px-2 pb-3">
         {days.map((day) => {
           const dateStr = format(day, 'yyyy-MM-dd');
           const daySchedules = schedulesByDate[dateStr] || [];
@@ -85,38 +87,39 @@ export default function Calendar({ filterMinisterId, filterMassId, currentMonth,
           const today = isToday(day);
           const isSunday = day.getDay() === 0;
           const isSelected = selectedDay && isSameDay(day, selectedDay);
+          const hasMass = daySchedules.length > 0;
 
           return (
             <button
               key={dateStr}
-              onClick={() => {
-                if (inMonth) setSelectedDay(isSameDay(day, selectedDay) ? null : day);
+              onClick={() => { if (inMonth) setSelectedDay(isSameDay(day, selectedDay) ? null : day); }}
+              disabled={!inMonth}
+              className="relative flex flex-col items-center justify-start min-h-[58px] rounded-xl p-1 transition-all"
+              style={{
+                opacity: inMonth ? 1 : 0.2,
+                cursor: inMonth ? 'pointer' : 'default',
+                backgroundColor: isSelected ? 'var(--gold-light)' : today ? 'var(--brown-light)' : hasMass && inMonth ? '#FEF9F0' : 'transparent',
+                border: isSelected ? '1.5px solid var(--gold)' : today ? '1.5px solid var(--brown)' : '1.5px solid transparent',
               }}
-              className={[
-                'relative flex flex-col items-center justify-start min-h-[56px] rounded-xl p-1 pt-1 transition-all text-sm font-medium border-2',
-                inMonth ? 'cursor-pointer' : 'opacity-25 cursor-default pointer-events-none',
-                isSelected ? 'border-2' : 'border-transparent',
-                inMonth ? 'hover:bg-gray-50' : '',
-                isSunday && inMonth ? 'font-bold' : '',
-              ].join(' ')}
-              style={isSelected ? {borderColor:'#8B6340'} : {}}
-              aria-label={`${format(day, 'd MMMM', { locale: ptBR })}${daySchedules.length > 0 ? `, ${daySchedules.length} missa(s)` : ''}`}
+              aria-label={`${format(day, 'd MMMM', { locale: ptBR })}${hasMass ? `, ${daySchedules.length} missa(s)` : ''}`}
             >
               <span
-                className="w-7 h-7 flex items-center justify-center rounded-full text-sm border-2"
+                className="w-7 h-7 flex items-center justify-center rounded-full"
                 style={{
-                  backgroundColor: today ? '#8B6340' : 'transparent',
-                  color: today ? '#fff' : (isSunday ? '#8B6340' : '#374151'),
+                  backgroundColor: today ? 'var(--brown-dark)' : 'transparent',
+                  color: today ? '#FFF8EC' : isSunday ? 'var(--brown)' : 'var(--text)',
                   fontWeight: today || isSunday ? 700 : 400,
-                  borderColor: today ? '#8B6340' : 'transparent',
+                  fontFamily: isSunday ? "'Cinzel', serif" : "'EB Garamond', serif",
+                  fontSize: 15,
+                  border: today ? '1.5px solid var(--gold)' : 'none',
                 }}
               >
                 {format(day, 'd')}
               </span>
 
-              {/* Ponto verde se tiver missa */}
-              {daySchedules.length > 0 && (
-                <span className="w-2 h-2 rounded-full bg-green-500 mt-0.5" />
+              {/* Ponto dourado se tiver missa */}
+              {hasMass && inMonth && (
+                <span className="w-1.5 h-1.5 rounded-full mt-0.5" style={{backgroundColor:'var(--gold)'}} />
               )}
             </button>
           );

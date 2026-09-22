@@ -1,9 +1,36 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --color-primary: #6d28d9;
-    --color-primary-light: #8b5cf6;
-    --color-primary-dark: #4c1d95;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --brown:      #7B4F2E;
+  --brown-dark: #5C3518;
+  --brown-light:#F5EDE3;
+  --gold:       #C9A84C;
+  --gold-light: #F5E6C0;
+  --cream:      #FBF7F0;
+  --border:     #DDD0BC;
+  --text:       #2C1A0E;
+  --muted:      #7D6148;
+}
+
+body {
+  background-color: var(--cream);
+  font-family: 'EB Garamond', Georgia, serif;
+  color: var(--text);
+}
+
+/* Ornamento divisor */
+.divider-cross {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--gold);
+}
+.divider-cross::before,
+.divider-cross::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
 }

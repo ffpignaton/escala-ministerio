@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShieldCheck, User } from 'lucide-react';
+import { ShieldCheck, User, FileText } from 'lucide-react';
 import { useApp } from './context/AppContext';
 import Calendar from './components/Calendar';
 import AdminLogin from './components/AdminLogin';
@@ -36,39 +36,59 @@ export default function App() {
   const activeMinsters = ministers.filter((m) => m.active).sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm print:hidden">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="Logo Paróquia Santíssima Trindade" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
-            <div>
-              <p className="text-xs leading-tight" style={{color:'#8B6340'}}>
-                Paróquia Santíssima Trindade - Matriz São Jorge
+    <div className="min-h-screen" style={{backgroundColor:'var(--cream)'}}>
+
+      {/* ── HEADER ── */}
+      <header className="print:hidden" style={{backgroundColor:'var(--brown-dark)', borderBottom:'3px solid var(--gold)'}}>
+        {/* Faixa dourada superior */}
+        <div style={{backgroundColor:'var(--gold)', height:4}} />
+
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
+            {/* Logo */}
+            <img
+              src="/logo.jpg"
+              alt="Logo Paróquia Santíssima Trindade"
+              className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+              style={{border:'2px solid var(--gold)', boxShadow:'0 0 0 3px var(--brown-dark), 0 0 0 5px var(--gold)'}}
+            />
+            {/* Textos */}
+            <div className="flex-1 min-w-0">
+              <p style={{fontFamily:"'Cinzel', serif", color:'var(--gold)', fontSize:11, letterSpacing:'0.12em', textTransform:'uppercase'}}>
+                Paróquia Santíssima Trindade · Matriz São Jorge
               </p>
-              <p className="text-xs leading-tight" style={{color:'#8B6340'}}>
+              <p style={{fontFamily:"'EB Garamond', serif", color:'#F5EDE3', fontSize:13, fontStyle:'italic', marginTop:1}}>
                 Ministros Extraordinários da Distribuição da Sagrada Comunhão
               </p>
             </div>
           </div>
-
         </div>
+
+        {/* Faixa dourada inferior */}
+        <div style={{backgroundColor:'var(--gold)', height:2, opacity:0.6}} />
       </header>
 
-      {/* Filtros */}
-      <div className="max-w-2xl mx-auto px-4 py-4 print:hidden">
-        <div className="flex gap-2 items-center">
+      {/* ── BARRA DE AÇÕES ── */}
+      <div className="print:hidden" style={{backgroundColor:'var(--brown)', borderBottom:'1px solid var(--gold)'}}>
+        <div className="max-w-2xl mx-auto px-4 py-2.5 flex gap-2 items-center">
 
-          {/* Select de ministro */}
+          {/* Select ministro */}
           <div className="flex-1 relative">
-            <User className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <User className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{color:'var(--gold)'}} />
             <select
               value={selectedMinisterId}
               onChange={handleMinisterChange}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 shadow-sm appearance-none cursor-pointer"
-              style={{'--tw-ring-color':'#8B6340'}}
+              className="w-full pl-8 pr-3 py-2 text-sm appearance-none cursor-pointer focus:outline-none"
+              style={{
+                backgroundColor:'var(--brown-dark)',
+                color:'var(--gold-light)',
+                border:'1px solid var(--gold)',
+                borderRadius:8,
+                fontFamily:"'EB Garamond', serif",
+                fontSize:14,
+              }}
             >
-              <option value="">Ver minha escala...</option>
+              <option value="">✦ Ver minha escala...</option>
               {activeMinsters.map((m) => (
                 <option key={m.id} value={m.id}>{m.name}</option>
               ))}
@@ -81,8 +101,15 @@ export default function App() {
           {/* Admin */}
           <button
             onClick={handleAdminClick}
-            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-white text-xs font-medium transition-colors flex-shrink-0"
-            style={{backgroundColor:'#8B6340'}}
+            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium flex-shrink-0 transition-opacity hover:opacity-80"
+            style={{
+              backgroundColor:'var(--gold)',
+              color:'var(--brown-dark)',
+              border:'none',
+              borderRadius:8,
+              fontFamily:"'Cinzel', serif",
+              letterSpacing:'0.05em',
+            }}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             Admin
@@ -90,11 +117,13 @@ export default function App() {
         </div>
       </div>
 
-      {/* Calendário */}
-      <main className="max-w-2xl mx-auto px-4 pb-8">
+      {/* ── CONTEÚDO ── */}
+      <main className="max-w-2xl mx-auto px-4 py-6 pb-10">
         <NoticesSection />
         <BirthdaysSection currentMonth={currentMonth} />
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 print:shadow-none print:border-none">
+
+        {/* Calendário */}
+        <div className="rounded-2xl overflow-hidden" style={{border:'1px solid var(--border)', boxShadow:'0 4px 24px rgba(91,53,24,0.08)'}}>
           <Calendar
             filterMinisterId={null}
             filterMassId={null}
@@ -103,9 +132,12 @@ export default function App() {
           />
         </div>
 
-        {/* Rodapé */}
-        <p className="text-center text-xs text-gray-400 mt-6 print:hidden">
-          Paróquia • Sistema de Escalas de Ministros
+        {/* Rodapé ornamental */}
+        <div className="mt-8 divider-cross text-xs" style={{color:'var(--gold)', fontFamily:"'Cinzel', serif", letterSpacing:'0.1em'}}>
+          ✝
+        </div>
+        <p className="text-center mt-2 text-xs print:hidden" style={{color:'var(--muted)', fontFamily:"'EB Garamond', serif", fontStyle:'italic'}}>
+          Paróquia Santíssima Trindade — Vila Capixaba, Cariacica/ES
         </p>
       </main>
 

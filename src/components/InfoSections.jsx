@@ -13,15 +13,15 @@ export function NoticesSection() {
   if (!notices || notices.length === 0) return null;
 
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-4">
+    <div className="rounded-2xl p-4 mb-4" style={{background:'linear-gradient(135deg,#FDF6E3,#F5E6C0)', border:'1px solid var(--gold)'}}>
       <div className="flex items-center gap-2 mb-3">
-        <Megaphone className="w-4 h-4 text-amber-600 flex-shrink-0" />
-        <h3 className="text-sm font-semibold text-amber-800">Avisos</h3>
+        <Megaphone className="w-4 h-4 flex-shrink-0" style={{color:'var(--brown)'}} />
+        <h3 style={{fontFamily:"'Cinzel', serif", fontSize:13, color:'var(--brown-dark)', letterSpacing:'0.06em', fontWeight:600}}>Avisos</h3>
       </div>
       <ul className="space-y-2">
         {notices.map((n) => (
-          <li key={n.id} className="flex items-start gap-2 text-sm text-amber-900">
-            <span className="text-amber-500 mt-0.5 flex-shrink-0">•</span>
+          <li key={n.id} className="flex items-start gap-2" style={{fontFamily:"'EB Garamond', serif", fontSize:15, color:'var(--text)'}}>
+            <span style={{color:'var(--gold)', marginTop:2, flexShrink:0}}>✦</span>
             <span className="leading-relaxed">{n.text}</span>
           </li>
         ))}
@@ -45,17 +45,17 @@ export function BirthdaysSection({ currentMonth }) {
   if (birthdays.length === 0) return null;
 
   return (
-    <div className="bg-pink-50 border border-pink-200 rounded-2xl p-4 mb-4">
+    <div className="rounded-2xl p-4 mb-4" style={{background:'linear-gradient(135deg,#FDF0F0,#FAE0E0)', border:'1px solid #E8B4B4'}}>
       <div className="flex items-center gap-2 mb-3">
-        <Cake className="w-4 h-4 text-pink-500 flex-shrink-0" />
-        <h3 className="text-sm font-semibold text-pink-700">Aniversariantes do mês</h3>
+        <Cake className="w-4 h-4 flex-shrink-0" style={{color:'#9B4444'}} />
+        <h3 style={{fontFamily:"'Cinzel', serif", fontSize:13, color:'#6B2222', letterSpacing:'0.06em', fontWeight:600}}>Aniversariantes do mês</h3>
       </div>
       <div className="flex flex-wrap gap-2">
         {birthdays.map((m) => (
-          <div key={m.id} className="flex items-center gap-1.5 bg-white border border-pink-200 rounded-full px-3 py-1">
+          <div key={m.id} className="flex items-center gap-1.5 rounded-full px-3 py-1" style={{backgroundColor:'rgba(255,255,255,0.7)', border:'1px solid #E8B4B4'}}>
             <span className="text-base">🎂</span>
-            <span className="text-xs font-medium text-pink-800">{m.name}</span>
-            <span className="text-xs text-pink-400">dia {m.md.day}</span>
+            <span style={{fontFamily:"'EB Garamond', serif", fontSize:14, color:'#6B2222', fontWeight:600}}>{m.name}</span>
+            <span style={{fontSize:12, color:'#C47070'}}>dia {m.md.day}</span>
           </div>
         ))}
       </div>

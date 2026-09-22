@@ -47,7 +47,7 @@ export default function App() {
           <div className="flex items-center gap-4">
             {/* Logo */}
             <img
-              src="/logo.jpg"
+              src="/logo.png"
               alt="Logo Paróquia Santíssima Trindade"
               className="w-16 h-16 rounded-full object-cover flex-shrink-0"
               style={{border:'2px solid var(--gold)', boxShadow:'0 0 0 3px var(--brown-dark), 0 0 0 5px var(--gold)'}}

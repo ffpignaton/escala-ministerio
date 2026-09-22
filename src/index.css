@@ -34,3 +34,7 @@ body {
   height: 1px;
   background: linear-gradient(to right, transparent, var(--gold), transparent);
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { X, Clock, Users, AlertCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { T } from '../styles/tokens';
 
 export default function DayModal({ day, daySchedules, onClose }) {
   const { ministers, masses } = useApp();
@@ -17,75 +18,78 @@ export default function DayModal({ day, daySchedules, onClose }) {
   const dateLabel = format(day, "EEEE, d 'de' MMMM 'de' yyyy", { locale: ptBR });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
-      <div className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md max-h-[85vh] flex flex-col">
+    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(3px)' }}
+      className="sm:items-center sm:p-4">
+      <div style={{ backgroundColor: 'var(--cream)', borderRadius: '24px 24px 0 0', boxShadow: '0 8px 40px rgba(0,0,0,0.25)', width: '100%', maxWidth: 480, maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+        className="sm:rounded-2xl">
 
         {/* Header */}
-        <div className="px-5 py-4 flex items-center justify-between flex-shrink-0 rounded-t-3xl sm:rounded-t-2xl" style={{backgroundColor:'#8B6340'}}>
+        <div style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, backgroundColor: 'var(--brown-dark)', borderRadius: '24px 24px 0 0' }}
+          className="sm:rounded-t-2xl">
           <div>
-            <p className="text-white/70 text-xs uppercase tracking-wide font-medium capitalize">
-              {isSunday ? '🌟 Domingo' : format(day, 'EEEE', { locale: ptBR })}
+            <p style={{ ...T.label, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em' }}>
+              {isSunday ? '✦ Domingo' : format(day, 'EEEE', { locale: ptBR })}
             </p>
-            <h3 className="text-white font-bold text-lg capitalize leading-tight">{dateLabel}</h3>
+            <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: 16, fontWeight: 700, color: 'var(--gold)', textTransform: 'capitalize', lineHeight: 1.3, marginTop: 2 }}>
+              {dateLabel}
+            </h3>
           </div>
           <button
             onClick={onClose}
-            className="text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+            style={{ padding: 8, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.1)', cursor: 'pointer', color: 'rgba(255,255,255,0.7)' }}
             aria-label="Fechar"
           >
-            <X className="w-5 h-5" />
+            <X size={18} />
           </button>
         </div>
 
         {/* Corpo */}
-        <div className="overflow-y-auto flex-1 p-4">
+        <div style={{ overflowY: 'auto', flex: 1, padding: 16 }}>
           {sortedSchedules.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-12 text-gray-400">
-              <AlertCircle className="w-10 h-10 opacity-40" />
-              <p className="text-sm">Nenhuma escala para este dia</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '48px 0', color: 'var(--muted)' }}>
+              <AlertCircle size={40} style={{ opacity: 0.35 }} />
+              <p style={T.small}>Nenhuma escala para este dia</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {sortedSchedules.map((schedule) => {
                 const mass = getMass(schedule.massId);
-                const ministersInSchedule = schedule.ministerIds
-                  .map(getMinister)
-                  .filter(Boolean);
+                const ministersInSchedule = schedule.ministerIds.map(getMinister).filter(Boolean);
 
                 return (
-                  <div key={schedule.id} className="rounded-xl border border-gray-100 overflow-hidden">
+                  <div key={schedule.id} style={{ borderRadius: 12, border: '1px solid var(--border)', overflow: 'hidden' }}>
                     {/* Cabeçalho da missa */}
-                    <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border-b border-gray-100">
-                      <Clock className="w-4 h-4 flex-shrink-0" style={{color:'#8B6340'}} />
-                      <span className="font-semibold text-gray-800 text-sm flex-1">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px', backgroundColor: 'var(--brown-light)', borderBottom: '1px solid var(--border)' }}>
+                      <Clock size={15} style={{ color: 'var(--brown)', flexShrink: 0 }} />
+                      <span style={{ ...T.body, fontWeight: 600, flex: 1, fontSize: 14 }}>
                         {mass?.name || 'Missa'}
                       </span>
-                      <span className="text-xs text-gray-400 bg-white border border-gray-200 px-2 py-0.5 rounded-full">
+                      <span style={{ ...T.small, fontSize: 11, backgroundColor: 'var(--gold-light)', color: 'var(--brown-dark)', padding: '2px 8px', borderRadius: 999 }}>
                         {mass?.time}
                       </span>
                     </div>
 
                     {/* Lista de ministros */}
-                    <div className="px-4 py-3">
+                    <div style={{ padding: '10px 14px' }}>
                       {ministersInSchedule.length === 0 ? (
-                        <p className="text-sm text-red-400 flex items-center gap-1">
-                          <AlertCircle className="w-3.5 h-3.5" /> Sem ministros escalados
+                        <p style={{ ...T.small, color: '#c0392b', display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <AlertCircle size={13} /> Sem ministros escalados
                         </p>
                       ) : (
-                        <div className="space-y-1.5">
-                          <div className="flex items-center gap-1 mb-2">
-                            <Users className="w-3.5 h-3.5 text-gray-400" />
-                            <span className="text-xs text-gray-400">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                            <Users size={13} style={{ color: 'var(--muted)' }} />
+                            <span style={T.small}>
                               {ministersInSchedule.length} ministro{ministersInSchedule.length !== 1 ? 's' : ''}
                             </span>
                           </div>
                           {ministersInSchedule.map((minister) => (
                             <div
                               key={minister.id}
-                              className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm bg-gray-50 text-gray-700"
+                              style={{ display: 'flex', alignItems: 'center', gap: 8, borderRadius: 8, padding: '5px 10px', backgroundColor: 'var(--brown-light)' }}
                             >
-                              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor:'#8B6340'}} />
-                              {minister.name}
+                              <span style={T.dot} />
+                              <span style={T.body}>{minister.name}</span>
                             </div>
                           ))}
                         </div>
@@ -99,11 +103,10 @@ export default function DayModal({ day, daySchedules, onClose }) {
         </div>
 
         {/* Rodapé */}
-        <div className="px-5 py-3 border-t border-gray-100 flex-shrink-0">
+        <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl text-white text-sm font-medium transition-colors"
-            style={{backgroundColor:'#8B6340'}}
+            style={{ ...T.btnPrimary, width: '100%', justifyContent: 'center', padding: '10px 0', fontSize: 12 }}
           >
             Fechar
           </button>

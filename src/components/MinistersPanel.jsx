@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Plus, Pencil, Trash2, Check, Phone, User, Cake } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { T } from '../styles/tokens';
 
 function formatBirthday(dateStr) {
   if (!dateStr) return null;
@@ -21,53 +22,51 @@ function MinisterForm({ initial, onSave, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-amber-50  rounded-xl p-4 border border-amber-100  space-y-3">
-      <div className="flex gap-2">
-        <div className="flex-1">
-          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Nome *</label>
+    <form onSubmit={handleSubmit} style={{ ...T.formCard, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ flex: 1 }}>
+          <label style={{ ...T.label, display: 'block', marginBottom: 4 }}>Nome *</label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nome do ministro"
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+            style={T.input}
             autoFocus
             required
           />
         </div>
-        <div className="flex-1">
-          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Telefone</label>
+        <div style={{ flex: 1 }}>
+          <label style={{ ...T.label, display: 'block', marginBottom: 4 }}>Telefone</label>
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="(11) 99999-0000"
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+            style={T.input}
           />
         </div>
       </div>
       <div>
-        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Data de nascimento</label>
+        <label style={{ ...T.label, display: 'block', marginBottom: 4 }}>Data de nascimento</label>
         <input
           type="date"
           value={birthday}
           onChange={(e) => setBirthday(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+          style={{ ...T.input, width: 'auto' }}
         />
       </div>
-      <label className="flex items-center gap-2 cursor-pointer">
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
         <input
           type="checkbox"
           checked={active}
           onChange={(e) => setActive(e.target.checked)}
-          className="rounded accent-amber-700"
+          style={{ accentColor: 'var(--brown)' }}
         />
-        <span className="text-sm text-gray-600 dark:text-gray-300">Ministro ativo</span>
+        <span style={T.body}>Ministro ativo</span>
       </label>
-      <div className="flex gap-2 justify-end">
-        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-          Cancelar
-        </button>
-        <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-medium flex items-center gap-1 transition-colors">
-          <Check className="w-4 h-4" /> Salvar
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+        <button type="button" onClick={onCancel} style={T.btnOutline}>Cancelar</button>
+        <button type="submit" style={T.btnPrimary}>
+          <Check size={14} /> Salvar
         </button>
       </div>
     </form>
@@ -86,20 +85,20 @@ export default function MinistersPanel() {
   );
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Busca + botão add */}
-      <div className="flex gap-2">
+      <div style={{ display: 'flex', gap: 8 }}>
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar ministro..."
-          className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+          style={{ ...T.input, flex: 1 }}
         />
         <button
           onClick={() => { setAdding(true); setEditingId(null); }}
-          className="px-4 py-2 rounded-lg bg-amber-800 hover:bg-amber-900 text-white text-sm font-medium flex items-center gap-1 transition-colors whitespace-nowrap"
+          style={T.btnPrimary}
         >
-          <Plus className="w-4 h-4" /> Novo
+          <Plus size={14} /> Novo
         </button>
       </div>
 
@@ -112,9 +111,9 @@ export default function MinistersPanel() {
       )}
 
       {/* Lista */}
-      <div className="space-y-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {filtered.length === 0 && (
-          <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-4">
+          <p style={{ ...T.small, textAlign: 'center', padding: '16px 0' }}>
             {search ? 'Nenhum resultado' : 'Nenhum ministro cadastrado'}
           </p>
         )}
@@ -127,41 +126,59 @@ export default function MinistersPanel() {
                 onCancel={() => setEditingId(null)}
               />
             ) : (
-              <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700/40 rounded-xl px-4 py-3 border border-gray-100 dark:border-gray-700">
-                <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                  <User className="w-4 h-4 text-amber-800" />
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 12,
+                backgroundColor: 'var(--brown-light)',
+                border: '1px solid var(--border)',
+                borderRadius: 12, padding: '10px 14px',
+              }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: '50%',
+                  backgroundColor: 'var(--gold-light)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  <User size={16} style={{ color: 'var(--brown-dark)' }} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">{minister.name}</p>
-                  <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ ...T.body, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {minister.name}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0 12px' }}>
                     {minister.phone && (
-                      <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
-                        <Phone className="w-3 h-3" /> {minister.phone}
+                      <p style={{ ...T.small, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Phone size={11} /> {minister.phone}
                       </p>
                     )}
                     {minister.birthday && (
-                      <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
-                        <Cake className="w-3 h-3" /> {formatBirthday(minister.birthday)}
+                      <p style={{ ...T.small, display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <Cake size={11} /> {formatBirthday(minister.birthday)}
                       </p>
                     )}
                   </div>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${minister.active ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 dark:bg-gray-700 text-gray-400'}`}>
+                <span style={{
+                  ...T.label,
+                  fontSize: 10,
+                  padding: '2px 8px',
+                  borderRadius: 999,
+                  backgroundColor: minister.active ? 'var(--gold-light)' : 'var(--border)',
+                  color: minister.active ? 'var(--brown-dark)' : 'var(--muted)',
+                }}>
                   {minister.active ? 'Ativo' : 'Inativo'}
                 </span>
                 <button
                   onClick={() => setEditingId(minister.id)}
-                  className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-400 transition-colors"
+                  style={{ padding: 6, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
                   aria-label="Editar"
                 >
-                  <Pencil className="w-4 h-4" />
+                  <Pencil size={15} />
                 </button>
                 <button
                   onClick={() => setConfirmDelete(minister.id)}
-                  className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-500 transition-colors"
+                  style={{ padding: 6, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
                   aria-label="Remover"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 size={15} />
                 </button>
               </div>
             )}
@@ -171,19 +188,17 @@ export default function MinistersPanel() {
 
       {/* Confirmação de exclusão */}
       {confirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full shadow-xl">
-            <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Confirmar exclusão</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.45)', padding: 16 }}>
+          <div style={{ backgroundColor: 'var(--cream)', borderRadius: 16, padding: 24, maxWidth: 360, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+            <h3 style={{ ...T.heading, fontSize: 15, marginBottom: 8 }}>Confirmar exclusão</h3>
+            <p style={{ ...T.small, marginBottom: 16 }}>
               Este ministro será removido de todas as escalas. Esta ação não pode ser desfeita.
             </p>
-            <div className="flex gap-3">
-              <button onClick={() => setConfirmDelete(null)} className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                Cancelar
-              </button>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setConfirmDelete(null)} style={{ ...T.btnOutline, flex: 1, justifyContent: 'center' }}>Cancelar</button>
               <button
                 onClick={() => { removeMinister(confirmDelete); setConfirmDelete(null); }}
-                className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-medium transition-colors"
+                style={{ ...T.btnDanger, flex: 1, justifyContent: 'center' }}
               >
                 Excluir
               </button>

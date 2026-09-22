@@ -1,8 +1,9 @@
 import { useState, useMemo } from 'react';
-import { Plus, Pencil, Trash2, Check, X, Clock, Users, ChevronDown, ChevronUp, CalendarDays } from 'lucide-react';
+import { Plus, Pencil, Trash2, Check, Clock, Users, ChevronDown, ChevronUp, CalendarDays } from 'lucide-react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useApp } from '../context/AppContext';
+import { T } from '../styles/tokens';
 
 function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
   const { ministers, masses } = useApp();
@@ -21,34 +22,29 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (!date || !massId) return;
-    onSave({
-      ...(initial ?? {}),
-      date,
-      massId,
-      ministerIds: selectedMinisters,
-    });
+    onSave({ ...(initial ?? {}), date, massId, ministerIds: selectedMinisters });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-amber-50 rounded-xl p-4 border border-amber-100 space-y-3">
-      <div className="grid grid-cols-2 gap-3">
+    <form onSubmit={handleSubmit} style={{ ...T.formCard, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         <div>
-          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Data *</label>
+          <label style={{ ...T.label, display: 'block', marginBottom: 4 }}>Data *</label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+            style={T.input}
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Missa *</label>
+          <label style={{ ...T.label, display: 'block', marginBottom: 4 }}>Missa *</label>
           <select
             value={massId}
             onChange={(e) => setMassId(e.target.value)}
             required
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300"
+            style={T.input}
           >
             {masses.map((m) => (
               <option key={m.id} value={m.id}>{m.name}</option>
@@ -58,28 +54,26 @@ function ScheduleForm({ initial, targetDate, onSave, onCancel }) {
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Ministros escalados</label>
-        <div className="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto">
+        <label style={{ ...T.label, display: 'block', marginBottom: 8 }}>Ministros escalados</label>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, maxHeight: 192, overflowY: 'auto' }}>
           {activeMinsters.map((m) => (
-            <label key={m.id} className="flex items-center gap-2 cursor-pointer rounded-lg px-3 py-2 hover:bg-white dark:hover:bg-gray-700 transition-colors">
+            <label key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', padding: '6px 10px', borderRadius: 8 }}>
               <input
                 type="checkbox"
                 checked={selectedMinisters.includes(m.id)}
                 onChange={() => toggleMinister(m.id)}
-                className="rounded accent-amber-700"
+                style={{ accentColor: 'var(--brown)' }}
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{m.name}</span>
+              <span style={{ ...T.body, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.name}</span>
             </label>
           ))}
         </div>
       </div>
 
-      <div className="flex gap-2 justify-end">
-        <button type="button" onClick={onCancel} className="px-4 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-          Cancelar
-        </button>
-        <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-amber-800 hover:bg-amber-900 text-white font-medium flex items-center gap-1 transition-colors">
-          <Check className="w-4 h-4" /> Salvar
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+        <button type="button" onClick={onCancel} style={T.btnOutline}>Cancelar</button>
+        <button type="submit" style={T.btnPrimary}>
+          <Check size={14} /> Salvar
         </button>
       </div>
     </form>
@@ -94,13 +88,9 @@ export default function SchedulesPanel() {
   const [expandedDate, setExpandedDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  const monthStart = startOfMonth(currentMonth);
-  const monthEnd = endOfMonth(currentMonth);
-
   const getMass = (id) => masses.find((m) => m.id === id);
   const getMinister = (id) => ministers.find((m) => m.id === id);
 
-  // Escalas agrupadas por data, dentro do mês visualizado
   const grouped = useMemo(() => {
     const monthStr = format(currentMonth, 'yyyy-MM');
     const filtered = schedules.filter((s) => s.date.startsWith(monthStr));
@@ -128,25 +118,37 @@ export default function SchedulesPanel() {
   }
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Navegação de mês */}
-      <div className="flex items-center justify-between">
-        <button onClick={() => setCurrentMonth((m) => subMonths(m, 1))} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <ChevronDown className="w-4 h-4 text-gray-500 rotate-90" />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <button
+          onClick={() => setCurrentMonth((m) => subMonths(m, 1))}
+          style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+        >
+          <ChevronDown size={16} style={{ transform: 'rotate(90deg)' }} />
         </button>
-        <span className="font-semibold text-gray-700 dark:text-gray-200 capitalize">
+        <span style={{ ...T.heading, fontSize: 14, textTransform: 'capitalize' }}>
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </span>
-        <button onClick={() => setCurrentMonth((m) => addMonths(m, 1))} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <ChevronDown className="w-4 h-4 text-gray-500 -rotate-90" />
+        <button
+          onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
+          style={{ padding: 8, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+        >
+          <ChevronDown size={16} style={{ transform: 'rotate(-90deg)' }} />
         </button>
       </div>
 
       <button
         onClick={() => { setAdding(true); setEditingId(null); }}
-        className="w-full py-2.5 rounded-xl border-2 border-dashed border-amber-200 text-amber-800 text-sm font-medium flex items-center justify-center gap-2 hover:bg-amber-50 transition-colors"
+        style={{
+          width: '100%', padding: '10px 0', borderRadius: 12,
+          border: '2px dashed var(--gold)', background: 'transparent',
+          color: 'var(--brown-dark)', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+          fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: '0.05em',
+        }}
       >
-        <Plus className="w-4 h-4" /> Nova Escala
+        <Plus size={14} /> Nova Escala
       </button>
 
       {adding && (
@@ -157,35 +159,41 @@ export default function SchedulesPanel() {
       )}
 
       {grouped.length === 0 && !adding && (
-        <div className="text-center py-8 text-gray-400 dark:text-gray-500">
-          <CalendarDays className="w-10 h-10 mx-auto mb-2 opacity-40" />
-          <p className="text-sm">Nenhuma escala neste mês</p>
+        <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--muted)' }}>
+          <CalendarDays size={40} style={{ margin: '0 auto 8px', opacity: 0.4 }} />
+          <p style={T.small}>Nenhuma escala neste mês</p>
         </div>
       )}
 
-      <div className="space-y-2">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {grouped.map(({ date, schedules: dayScheds }) => {
           const isExpanded = expandedDate === date;
           return (
-            <div key={date} className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div key={date} style={{ borderRadius: 12, border: '1px solid var(--border)', overflow: 'hidden' }}>
               <button
                 onClick={() => setExpandedDate(isExpanded ? null : date)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700/40 hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors"
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '10px 14px', backgroundColor: 'var(--brown-light)',
+                  border: 'none', cursor: 'pointer', textAlign: 'left',
+                }}
               >
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-amber-700" />
-                  <span className="text-sm font-medium text-gray-800 dark:text-gray-200 capitalize">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <CalendarDays size={15} style={{ color: 'var(--brown)' }} />
+                  <span style={{ ...T.body, fontWeight: 600, textTransform: 'capitalize', fontSize: 13 }}>
                     {formatDateLabel(date)}
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 dark:text-gray-500">{dayScheds.length} missa(s)</span>
-                  {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={T.small}>{dayScheds.length} missa(s)</span>
+                  {isExpanded
+                    ? <ChevronUp size={15} style={{ color: 'var(--muted)' }} />
+                    : <ChevronDown size={15} style={{ color: 'var(--muted)' }} />}
                 </div>
               </button>
 
               {isExpanded && (
-                <div className="p-3 space-y-2">
+                <div style={{ padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {dayScheds.map((schedule) => {
                     const mass = getMass(schedule.massId);
                     return (
@@ -197,21 +205,31 @@ export default function SchedulesPanel() {
                             onCancel={() => setEditingId(null)}
                           />
                         ) : (
-                          <div className="flex items-start gap-3 bg-white dark:bg-gray-800 rounded-lg px-3 py-2.5 border border-gray-100 dark:border-gray-700">
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-1.5 mb-1">
-                                <Clock className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{mass?.name}</span>
+                          <div style={{
+                            display: 'flex', alignItems: 'flex-start', gap: 10,
+                            backgroundColor: 'var(--cream)',
+                            borderRadius: 10, padding: '8px 12px',
+                            border: '1px solid var(--border)',
+                          }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                                <Clock size={13} style={{ color: 'var(--gold)', flexShrink: 0 }} />
+                                <span style={{ ...T.body, fontWeight: 600, fontSize: 13 }}>{mass?.name}</span>
                               </div>
-                              <div className="flex items-center gap-1 flex-wrap">
-                                <Users className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                                <Users size={12} style={{ color: 'var(--muted)', flexShrink: 0 }} />
                                 {schedule.ministerIds.length === 0 ? (
-                                  <span className="text-xs text-red-400">Sem ministros</span>
+                                  <span style={{ ...T.small, color: '#c0392b' }}>Sem ministros</span>
                                 ) : (
                                   schedule.ministerIds.map((mid) => {
                                     const min = getMinister(mid);
                                     return min ? (
-                                      <span key={mid} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded-full">
+                                      <span key={mid} style={{
+                                        ...T.small, fontSize: 11,
+                                        backgroundColor: 'var(--gold-light)',
+                                        color: 'var(--brown-dark)',
+                                        padding: '1px 8px', borderRadius: 999,
+                                      }}>
                                         {min.name}
                                       </span>
                                     ) : null;
@@ -219,12 +237,18 @@ export default function SchedulesPanel() {
                                 )}
                               </div>
                             </div>
-                            <div className="flex gap-1 flex-shrink-0">
-                              <button onClick={() => setEditingId(schedule.id)} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-gray-600 transition-colors">
-                                <Pencil className="w-3.5 h-3.5" />
+                            <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                              <button
+                                onClick={() => setEditingId(schedule.id)}
+                                style={{ padding: 5, borderRadius: 7, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+                              >
+                                <Pencil size={13} />
                               </button>
-                              <button onClick={() => setConfirmDelete(schedule.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-400 hover:text-red-500 transition-colors">
-                                <Trash2 className="w-3.5 h-3.5" />
+                              <button
+                                onClick={() => setConfirmDelete(schedule.id)}
+                                style={{ padding: 5, borderRadius: 7, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+                              >
+                                <Trash2 size={13} />
                               </button>
                             </div>
                           </div>
@@ -240,15 +264,16 @@ export default function SchedulesPanel() {
       </div>
 
       {confirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full shadow-xl">
-            <h3 className="font-bold text-gray-800 dark:text-gray-100 mb-2">Remover escala</h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Tem certeza que deseja remover esta escala?</p>
-            <div className="flex gap-3">
-              <button onClick={() => setConfirmDelete(null)} className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                Cancelar
-              </button>
-              <button onClick={() => { removeSchedule(confirmDelete); setConfirmDelete(null); }} className="flex-1 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-medium transition-colors">
+        <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.45)', padding: 16 }}>
+          <div style={{ backgroundColor: 'var(--cream)', borderRadius: 16, padding: 24, maxWidth: 360, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+            <h3 style={{ ...T.heading, fontSize: 15, marginBottom: 8 }}>Remover escala</h3>
+            <p style={{ ...T.small, marginBottom: 16 }}>Tem certeza que deseja remover esta escala?</p>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <button onClick={() => setConfirmDelete(null)} style={{ ...T.btnOutline, flex: 1, justifyContent: 'center' }}>Cancelar</button>
+              <button
+                onClick={() => { removeSchedule(confirmDelete); setConfirmDelete(null); }}
+                style={{ ...T.btnDanger, flex: 1, justifyContent: 'center' }}
+              >
                 Remover
               </button>
             </div>

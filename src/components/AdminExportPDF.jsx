@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth } from 'date-fns';
+import { format, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { ChevronDown, ChevronUp, FileDown } from 'lucide-react';
+import { ChevronDown, FileDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { T } from '../styles/tokens';
 
 export default function AdminExportPDF() {
   const { schedules, ministers, masses } = useApp();
@@ -23,7 +24,6 @@ export default function AdminExportPDF() {
       return (getMass(a.massId)?.time || '').localeCompare(getMass(b.massId)?.time || '');
     });
 
-  // Agrupa por data
   const grouped = [];
   monthSchedules.forEach((s) => {
     const last = grouped[grouped.length - 1];
@@ -72,57 +72,71 @@ export default function AdminExportPDF() {
   const monthLabel = format(month, "MMMM 'de' yyyy", { locale: ptBR });
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Seletor de mês + botão exportar */}
-      <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/40 rounded-xl px-4 py-3 border border-gray-100 dark:border-gray-700">
-        <div className="flex items-center gap-2">
-          <button onClick={() => setMonth((m) => subMonths(m, 1))} className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-            <ChevronDown className="w-4 h-4 text-gray-500 rotate-90" />
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        backgroundColor: 'var(--brown-light)', borderRadius: 12, padding: '10px 14px',
+        border: '1px solid var(--border)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button
+            onClick={() => setMonth((m) => subMonths(m, 1))}
+            style={{ padding: 6, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+          >
+            <ChevronDown size={15} style={{ transform: 'rotate(90deg)' }} />
           </button>
-          <span className="font-semibold text-gray-700 dark:text-gray-200 capitalize text-sm w-36 text-center">
+          <span style={{ ...T.heading, fontSize: 13, textTransform: 'capitalize', minWidth: 140, textAlign: 'center' }}>
             {monthLabel}
           </span>
-          <button onClick={() => setMonth((m) => addMonths(m, 1))} className="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-            <ChevronDown className="w-4 h-4 text-gray-500 -rotate-90" />
+          <button
+            onClick={() => setMonth((m) => addMonths(m, 1))}
+            style={{ padding: 6, borderRadius: 8, border: 'none', background: 'transparent', cursor: 'pointer', color: 'var(--muted)' }}
+          >
+            <ChevronDown size={15} style={{ transform: 'rotate(-90deg)' }} />
           </button>
         </div>
         <button
           onClick={handleExport}
           disabled={loading || grouped.length === 0}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-sm font-medium transition-colors"
+          style={{
+            ...T.btnPrimary,
+            opacity: (loading || grouped.length === 0) ? 0.5 : 1,
+            cursor: (loading || grouped.length === 0) ? 'not-allowed' : 'pointer',
+          }}
         >
           {loading ? (
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'var(--gold)', borderRadius: '50%', animation: 'spin 0.7s linear infinite', display: 'inline-block' }} />
           ) : (
-            <FileDown className="w-4 h-4" />
+            <FileDown size={14} />
           )}
           {loading ? 'Gerando...' : 'Exportar PDF'}
         </button>
       </div>
 
       {grouped.length === 0 && (
-        <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-6">Nenhuma escala neste mês</p>
+        <p style={{ ...T.small, textAlign: 'center', padding: '24px 0' }}>Nenhuma escala neste mês</p>
       )}
 
-      {/* Preview das escalas do mês */}
+      {/* Preview */}
       {grouped.length > 0 && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <div className="bg-gray-50 dark:bg-gray-700/40 px-4 py-2 border-b border-gray-200 dark:border-gray-700">
-            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+        <div style={{ borderRadius: 12, border: '1px solid var(--border)', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: 'var(--brown-light)', padding: '8px 14px', borderBottom: '1px solid var(--border)' }}>
+            <p style={T.label}>
               {grouped.length} dia(s) com escala · {monthSchedules.length} missa(s)
             </p>
           </div>
-          <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-64 overflow-y-auto">
+          <div style={{ maxHeight: 256, overflowY: 'auto' }}>
             {grouped.map(({ date, schedules: ds }) => (
-              <div key={date} className="px-4 py-2">
-                <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 capitalize mb-1">{formatDate(date)}</p>
+              <div key={date} style={{ padding: '8px 14px', borderBottom: '1px solid var(--border)' }}>
+                <p style={{ ...T.body, fontWeight: 600, fontSize: 12, textTransform: 'capitalize', marginBottom: 4 }}>{formatDate(date)}</p>
                 {ds.map((s) => {
                   const mass = getMass(s.massId);
                   const mins = s.ministerIds.map(getMinister).filter(Boolean);
                   return (
-                    <div key={s.id} className="flex items-start gap-2 text-xs text-gray-500 dark:text-gray-400 mb-0.5">
-                      <span className="font-medium w-10 flex-shrink-0" style={{color:'var(--brown)'}}>{mass?.time}</span>
-                      <span>{mins.map((m) => m.name).join(', ') || 'Sem ministros'}</span>
+                    <div key={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 2 }}>
+                      <span style={{ ...T.small, fontSize: 11, fontWeight: 600, color: 'var(--brown)', minWidth: 38, flexShrink: 0 }}>{mass?.time}</span>
+                      <span style={{ ...T.small, fontSize: 11 }}>{mins.map((m) => m.name).join(', ') || 'Sem ministros'}</span>
                     </div>
                   );
                 })}
@@ -133,9 +147,8 @@ export default function AdminExportPDF() {
       )}
 
       {/* Template oculto para captura */}
-      <div className="fixed -left-[9999px] top-0" aria-hidden="true">
+      <div style={{ position: 'fixed', left: -9999, top: 0 }} aria-hidden="true">
         <div ref={ref} style={{ width: 794, backgroundColor: '#fff', padding: '28px', fontFamily: 'sans-serif' }}>
-          {/* Cabeçalho */}
           <div style={{ textAlign: 'center', marginBottom: 20, borderBottom: '2px solid #8B6340', paddingBottom: 14 }}>
             <p style={{ color: '#8B6340', fontWeight: 700, fontSize: 14, margin: 0 }}>
               Paróquia Santíssima Trindade - Matriz São Jorge
@@ -148,16 +161,9 @@ export default function AdminExportPDF() {
             </p>
           </div>
 
-          {/* Lista de escalas por dia */}
           {grouped.map(({ date, schedules: ds }) => (
             <div key={date} style={{ marginBottom: 16 }}>
-              <div style={{
-                backgroundColor: '#f5ede3',
-                borderLeft: '4px solid #8B6340',
-                padding: '5px 10px',
-                marginBottom: 6,
-                borderRadius: '0 4px 4px 0',
-              }}>
+              <div style={{ backgroundColor: '#f5ede3', borderLeft: '4px solid #8B6340', padding: '5px 10px', marginBottom: 6, borderRadius: '0 4px 4px 0' }}>
                 <p style={{ margin: 0, fontWeight: 700, fontSize: 11, color: '#8B6340', textTransform: 'capitalize' }}>
                   {formatDate(date)}
                 </p>
@@ -190,7 +196,6 @@ export default function AdminExportPDF() {
             </div>
           ))}
 
-          {/* Rodapé */}
           <div style={{ marginTop: 20, borderTop: '1px solid #eee', paddingTop: 8, textAlign: 'center', fontSize: 9, color: '#aaa' }}>
             Gerado em {format(new Date(), "dd/MM/yyyy 'às' HH:mm")}
           </div>

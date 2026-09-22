@@ -3,13 +3,13 @@ import { X, Clock, CalendarDays, User } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useApp } from '../context/AppContext';
+import { T } from '../styles/tokens';
 
 export default function MinisterScheduleModal({ minister, onClose }) {
   const { schedules, masses } = useApp();
 
   const getMass = (id) => masses.find((m) => m.id === id);
 
-  // Todas as escalas deste ministro, ordenadas por data
   const mySchedules = useMemo(() => {
     return schedules
       .filter((s) => s.ministerIds.includes(minister.id))
@@ -19,11 +19,10 @@ export default function MinisterScheduleModal({ minister, onClose }) {
       });
   }, [schedules, minister.id, masses]);
 
-  // Agrupa por mês
   const grouped = useMemo(() => {
     const map = {};
     mySchedules.forEach((s) => {
-      const monthKey = s.date.slice(0, 7); // yyyy-MM
+      const monthKey = s.date.slice(0, 7);
       if (!map[monthKey]) map[monthKey] = [];
       map[monthKey].push(s);
     });
@@ -41,18 +40,26 @@ export default function MinisterScheduleModal({ minister, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
-      <div className="bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl w-full sm:max-w-md max-h-[85vh] flex flex-col">
+    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(3px)' }}
+      className="sm:items-center sm:p-4">
+      <div style={{ backgroundColor: 'var(--cream)', borderRadius: '24px 24px 0 0', boxShadow: '0 8px 40px rgba(0,0,0,0.25)', width: '100%', maxWidth: 480, maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+        className="sm:rounded-2xl">
 
         {/* Header */}
-        <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{backgroundColor:'#f5ede3'}}>
-              <User className="w-5 h-5" style={{color:'#8B6340'}} />
+        <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: '50%',
+              backgroundColor: 'var(--gold-light)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <User size={18} style={{ color: 'var(--brown-dark)' }} />
             </div>
             <div>
-              <h2 className="font-bold text-gray-900 text-base leading-tight">{minister.name}</h2>
-              <p className="text-xs text-gray-400">
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 15, fontWeight: 700, color: 'var(--brown-dark)' }}>
+                {minister.name}
+              </h2>
+              <p style={T.small}>
                 {mySchedules.length === 0
                   ? 'Nenhuma escala encontrada'
                   : `${mySchedules.length} escala${mySchedules.length !== 1 ? 's' : ''} no total`}
@@ -61,46 +68,46 @@ export default function MinisterScheduleModal({ minister, onClose }) {
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            style={{ padding: 8, borderRadius: '50%', border: 'none', background: 'var(--brown-light)', cursor: 'pointer', color: 'var(--muted)' }}
           >
-            <X className="w-5 h-5" />
+            <X size={18} />
           </button>
         </div>
 
         {/* Conteúdo */}
-        <div className="overflow-y-auto flex-1 p-4">
+        <div style={{ overflowY: 'auto', flex: 1, padding: 16 }}>
           {mySchedules.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-12 text-gray-400">
-              <CalendarDays className="w-10 h-10 opacity-40" />
-              <p className="text-sm">Nenhuma escala cadastrada para este ministro</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '48px 0', color: 'var(--muted)' }}>
+              <CalendarDays size={40} style={{ opacity: 0.35 }} />
+              <p style={T.small}>Nenhuma escala cadastrada para este ministro</p>
             </div>
           ) : (
-            <div className="space-y-5">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {grouped.map(([monthKey, items]) => (
                 <div key={monthKey}>
                   {/* Cabeçalho do mês */}
-                  <div className="flex items-center gap-2 mb-2">
-                    <CalendarDays className="w-3.5 h-3.5" style={{color:'#8B6340'}} />
-                    <span className="text-xs font-semibold uppercase tracking-wide capitalize" style={{color:'#8B6340'}}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <CalendarDays size={13} style={{ color: 'var(--brown)' }} />
+                    <span style={{ ...T.label, textTransform: 'capitalize', color: 'var(--brown)' }}>
                       {formatMonthLabel(monthKey)}
                     </span>
-                    <span className="text-xs text-gray-400">· {items.length} escala{items.length !== 1 ? 's' : ''}</span>
+                    <span style={T.small}>· {items.length} escala{items.length !== 1 ? 's' : ''}</span>
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {items.map((s) => {
                       const mass = getMass(s.massId);
                       return (
                         <div
                           key={s.id}
-                          className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-2.5 border border-gray-100"
+                          style={{ display: 'flex', alignItems: 'center', gap: 12, backgroundColor: 'var(--brown-light)', borderRadius: 12, padding: '8px 14px', border: '1px solid var(--border)' }}
                         >
-                          <div className="w-2 h-2 rounded-full bg-amber-600 flex-shrink-0" />
-                          <span className="text-sm text-gray-700 font-medium capitalize flex-1">
+                          <span style={T.dot} />
+                          <span style={{ ...T.body, fontWeight: 500, textTransform: 'capitalize', flex: 1 }}>
                             {formatDate(s.date)}
                           </span>
-                          <div className="flex items-center gap-1 text-xs px-2 py-0.5 rounded-full" style={{color:'#8B6340', backgroundColor:'#f5ede3'}}>
-                            <Clock className="w-3 h-3" />
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, padding: '2px 8px', borderRadius: 999, backgroundColor: 'var(--gold-light)', color: 'var(--brown-dark)', fontFamily: "'EB Garamond', serif" }}>
+                            <Clock size={11} />
                             {mass?.time}
                           </div>
                         </div>
@@ -114,11 +121,10 @@ export default function MinisterScheduleModal({ minister, onClose }) {
         </div>
 
         {/* Rodapé */}
-        <div className="px-5 py-3 border-t border-gray-100 flex-shrink-0">
+        <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl text-white text-sm font-medium transition-colors"
-            style={{backgroundColor:'#8B6340'}}
+            style={{ ...T.btnPrimary, width: '100%', justifyContent: 'center', padding: '10px 0', fontSize: 12 }}
           >
             Fechar
           </button>

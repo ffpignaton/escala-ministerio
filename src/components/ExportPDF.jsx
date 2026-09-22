@@ -3,6 +3,7 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSa
 import { ptBR } from 'date-fns/locale';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FileDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -84,12 +85,12 @@ export default function ExportPDF({ currentMonth }) {
         onClick={handleExport}
         disabled={loading}
         className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium flex-shrink-0 transition-opacity hover:opacity-80 disabled:opacity-50"
-        style={{backgroundColor:'var(--gold)', color:'var(--brown-dark)', borderRadius:8, fontFamily:"'Cinzel', serif", letterSpacing:'0.05em'}}
+        style={{backgroundColor:'var(--gold)', color:'var(--brown-dark)', border:'none', borderRadius:8, fontFamily:"'Cinzel', serif", letterSpacing:'0.05em', cursor:'pointer'}}
       >
         {loading ? (
           <span className="w-3.5 h-3.5 border-2 rounded-full animate-spin" style={{borderColor:'var(--brown-dark)',borderTopColor:'transparent'}} />
         ) : (
-          <span className="text-sm">📄</span>
+          <FileDown size={14} />
         )}
         {loading ? 'Gerando...' : 'PDF'}
       </button>

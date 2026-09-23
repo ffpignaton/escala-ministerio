@@ -20,6 +20,15 @@
       "time": "19:00"
     }
   ],
-  "schedules": [],
+  "schedules": [
+    {
+      "date": "2026-09-24",
+      "massId": "m1",
+      "ministerIds": [
+        "25cefb24-646e-49b5-bd36-7033b56f40af"
+      ],
+      "id": "ae6a63f7-08c0-4b20-898b-edae6650c213"
+    }
+  ],
   "notices": []
 }

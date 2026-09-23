@@ -3,7 +3,7 @@
     {
       "id": "1",
       "name": "Ana Lima",
-      "phone": "(11) 99999-0001",
+      "phone": "5527997134106",
       "active": true,
       "birthday": "1980-09-22"
     },
@@ -37,13 +37,6 @@
       "name": "Pedro Costa",
       "phone": "(11) 99999-0006",
       "active": true
-    },
-    {
-      "name": "Fabiano Fabri Pignaton",
-      "phone": "5527997134106",
-      "birthday": "1981-08-21",
-      "active": true,
-      "id": "0dbe19b8-c2db-496f-b325-a11ab4da1158"
     }
   ],
   "masses": [
@@ -63,9 +56,9 @@
       "date": "2026-09-23",
       "massId": "m3",
       "ministerIds": [
-        "0dbe19b8-c2db-496f-b325-a11ab4da1158"
+        "1"
       ],
-      "id": "0eb520aa-489c-44f1-9ed6-8361b0576f73"
+      "id": "06ae8fd8-8dd9-4491-9b7f-12762e4c33c7"
     }
   ],
   "notices": []

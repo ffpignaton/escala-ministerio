@@ -37,6 +37,13 @@
       "name": "Pedro Costa",
       "phone": "(11) 99999-0006",
       "active": true
+    },
+    {
+      "name": "Fabiano Fabri Pignaton",
+      "phone": "5527996172121",
+      "birthday": "1981-08-21",
+      "active": true,
+      "id": "0dbe19b8-c2db-496f-b325-a11ab4da1158"
     }
   ],
   "masses": [
@@ -53,51 +60,12 @@
   ],
   "schedules": [
     {
-      "date": "2026-09-27",
+      "date": "2026-09-23",
       "massId": "m3",
       "ministerIds": [
-        "1",
-        "3",
-        "5",
-        "6",
-        "4",
-        "2"
+        "0dbe19b8-c2db-496f-b325-a11ab4da1158"
       ],
-      "id": "69168e8d-0b53-4490-9e79-2ef9d1121056"
-    },
-    {
-      "date": "2026-09-26",
-      "massId": "m1",
-      "ministerIds": [
-        "1",
-        "5",
-        "4",
-        "2"
-      ],
-      "id": "b5203efa-aa32-4cb6-a333-0ce8a97ed1c1"
-    },
-    {
-      "date": "2026-09-24",
-      "massId": "m1",
-      "ministerIds": [
-        "3",
-        "5",
-        "2",
-        "4",
-        "6"
-      ],
-      "id": "c273a42e-18c1-4484-9f68-6e1b25ca208e"
-    },
-    {
-      "date": "2026-09-27",
-      "massId": "m1",
-      "ministerIds": [
-        "5",
-        "3",
-        "6",
-        "4"
-      ],
-      "id": "37acbd03-690a-48c2-bb2b-e7b4d02f99ad"
+      "id": "0eb520aa-489c-44f1-9ed6-8361b0576f73"
     }
   ],
   "notices": []

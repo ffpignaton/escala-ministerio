@@ -1,5 +1,13 @@
 {
-  "ministers": [],
+  "ministers": [
+    {
+      "name": "Fabiano Fabri Pignaton",
+      "phone": "27997134106",
+      "birthday": "1981-08-21",
+      "active": true,
+      "id": "25cefb24-646e-49b5-bd36-7033b56f40af"
+    }
+  ],
   "masses": [
     {
       "id": "m1",

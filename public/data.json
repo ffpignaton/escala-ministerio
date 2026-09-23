@@ -2,41 +2,10 @@
   "ministers": [
     {
       "id": "1",
-      "name": "Ana Lima",
+      "name": "Fabiano Fabri Pignaton",
       "phone": "5527997134106",
       "active": true,
-      "birthday": "1980-09-22"
-    },
-    {
-      "id": "2",
-      "name": "Carlos Silva",
-      "phone": "(11) 99999-0002",
-      "active": true,
-      "birthday": "1980-10-22"
-    },
-    {
-      "id": "3",
-      "name": "Maria Santos",
-      "phone": "(11) 99999-0003",
-      "active": true
-    },
-    {
-      "id": "4",
-      "name": "João Oliveira",
-      "phone": "(11) 99999-0004",
-      "active": true
-    },
-    {
-      "id": "5",
-      "name": "Lucia Ferreira",
-      "phone": "(11) 99999-0005",
-      "active": true
-    },
-    {
-      "id": "6",
-      "name": "Pedro Costa",
-      "phone": "(11) 99999-0006",
-      "active": true
+      "birthday": "1981-08-21"
     }
   ],
   "masses": [

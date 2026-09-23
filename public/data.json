@@ -1,13 +1,5 @@
 {
-  "ministers": [
-    {
-      "id": "1",
-      "name": "Fabiano Fabri Pignaton",
-      "phone": "5527997134106",
-      "active": true,
-      "birthday": "1981-08-21"
-    }
-  ],
+  "ministers": [],
   "masses": [
     {
       "id": "m1",
@@ -20,23 +12,6 @@
       "time": "19:00"
     }
   ],
-  "schedules": [
-    {
-      "date": "2026-09-23",
-      "massId": "m3",
-      "ministerIds": [
-        "1"
-      ],
-      "id": "06ae8fd8-8dd9-4491-9b7f-12762e4c33c7"
-    },
-    {
-      "date": "2026-09-24",
-      "massId": "m3",
-      "ministerIds": [
-        "1"
-      ],
-      "id": "976b62dd-99e3-4fd4-8c39-4618934c681e"
-    }
-  ],
+  "schedules": [],
   "notices": []
 }

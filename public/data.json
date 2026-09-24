@@ -23,11 +23,19 @@
   "schedules": [
     {
       "date": "2026-09-24",
+      "massId": "m3",
+      "ministerIds": [
+        "25cefb24-646e-49b5-bd36-7033b56f40af"
+      ],
+      "id": "8b233837-5cf5-4a84-aef0-7bbed0d0f2ac"
+    },
+    {
+      "date": "2026-09-25",
       "massId": "m1",
       "ministerIds": [
         "25cefb24-646e-49b5-bd36-7033b56f40af"
       ],
-      "id": "ae6a63f7-08c0-4b20-898b-edae6650c213"
+      "id": "b2a7d3da-4bde-4ee0-a20d-f00ef8047df6"
     }
   ],
   "notices": []

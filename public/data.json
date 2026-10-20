@@ -6,6 +6,13 @@
       "birthday": "1981-08-21",
       "active": true,
       "id": "25cefb24-646e-49b5-bd36-7033b56f40af"
+    },
+    {
+      "name": "João",
+      "phone": "27 9999-9999",
+      "birthday": "2026-10-20",
+      "active": true,
+      "id": "2d3d2b23-3688-40b5-864b-bb0e2ea92462"
     }
   ],
   "masses": [
@@ -44,6 +51,22 @@
         "25cefb24-646e-49b5-bd36-7033b56f40af"
       ],
       "id": "1dddebfd-6161-4e2d-8afc-fed5e763f7f7"
+    },
+    {
+      "date": "2026-10-25",
+      "massId": "m1",
+      "ministerIds": [
+        "25cefb24-646e-49b5-bd36-7033b56f40af"
+      ],
+      "id": "eb7194e4-3ca6-4290-8940-04a1592dbd74"
+    },
+    {
+      "date": "2026-10-25",
+      "massId": "m3",
+      "ministerIds": [
+        "2d3d2b23-3688-40b5-864b-bb0e2ea92462"
+      ],
+      "id": "39127f5a-c586-4991-8773-603a077073af"
     }
   ],
   "notices": []
